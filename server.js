@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const logger=require('./config/logger.config')
 
 // create express app
 const app = express();
@@ -8,7 +9,7 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: true }))
 
 // parse requests of content-type - application/json
-app.use(bodyParser.json())
+~app.use(bodyParser.json())
 
 // Configuring the database
 const dbConfig = require('./config/database.config.js');
@@ -20,7 +21,8 @@ mongoose.Promise = global.Promise;
 mongoose.connect(dbConfig.url, {
     useNewUrlParser: true
 }).then(() => {
-    console.log("Successfully connected to the database");    
+    console.log("Successfully connected to the database"); 
+    logger.info("database connected");   
 }).catch(err => {
     console.log('Could not connect to the database. Exiting now...', err);
     process.exit();
