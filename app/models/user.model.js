@@ -1,0 +1,65 @@
+const mongoose = require("mongoose");
+const UserSchema = mongoose.Schema(
+  {
+    name: String,
+    age: Number,
+  },
+  {
+    timestamps: true,
+  }
+);
+
+const user = mongoose.model("User", UserSchema);
+
+class userModel {
+  //creates a note and saves it in database
+  createUser= (name,age, callback) => {
+    const tempUser = new user({
+      name:name,
+      age:age,
+    });
+    // Save Note in the database
+    return tempUser.save((err, data) => {
+      return err ? callback(err, null) : callback(null, data);
+    });
+  };
+
+  // Retrieve and return all notes from the database.
+  findAll = (callback) => {
+    return user.find((err, data) => {
+      return err ? callback(err, null) : callback(null, data);
+    });
+  };
+
+  // Find a single note with a userId
+  findOne = (userId, callback) => {
+    user.findById(userId, (err, data) => {
+      return err ? callback(err, null) : callback(null, data);
+    });
+  };
+
+  // Update a note identified by the userId in the request
+  updateUser = (userId, name, age, callback) => {
+    // Find note and update it with the request body
+    user.findByIdAndUpdate(
+      userId,
+      {
+        name: name || "Untitled Note",
+        age: age,
+      },
+      { new: true },
+      (err, data) => {
+        return err ? callback(err, null) : callback(null, data);
+      }
+    );
+  };
+
+  // Delete a note with the specified userId in the request
+  deleteUser = (userId, callback) => {
+    user.findByIdAndRemove(userId, (err, data) => {
+      return err ? callback(err, null) : callback(null, data);
+    });
+  };
+}
+
+module.exports = new userModel();
