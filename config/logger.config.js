@@ -1,6 +1,9 @@
 const { createLogger, format, transports } = require('winston');
 const { combine, timestamp, prettyPrint,json } = format; 
 
+let errorLogFileName =  new Date().toLocaleDateString()+'_error.log';
+let combinedLogFileName =  new Date().toLocaleDateString()+'_combined.log';
+
 const logger = createLogger({
   level: 'info',
   format: combine(
@@ -9,8 +12,8 @@ const logger = createLogger({
     prettyPrint()
   ),
   transports: [
-    new transports.File({ filename: './loggs/error.log', level: 'error' }),
-    new transports.File({ filename: './loggs/combined.log' }),
+    new transports.File({ filename: `./loggs/${errorLogFileName}`, level: 'error' }),
+    new transports.File({ filename: `./loggs/${combinedLogFileName}` }),
   ],
 });
 
