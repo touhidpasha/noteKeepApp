@@ -1,11 +1,18 @@
 const userService = require("../services/user.service.js");
-
+const middlewares=require("../middlewares/user.middleware.js")
+const jwt=require("../utils/utils")
 class controller {
   //creates a note in the database
   createUser = (req, res) => {
     let name = req.body.name || "Untitled user";
     let age = req.body.age;
-    userService.createUser(name, age, (err, data) => {
+    const info={name:req.body.name,
+      age : req.body.age,
+      email:req.body.email,
+      password:req.body.password
+
+    }
+    userService.createUser(info, (err, data) => {
       if (err) {
         res.status(500).send({
           message:
@@ -15,6 +22,25 @@ class controller {
       res.status(200).send(data);
     });
   };
+
+
+    //method for user-login
+    login=(req,res)=>{
+      userService.login(req.body.email,(err,data)=>{
+        // console.log(data);
+        if(err){
+          res.status(401).send({ message:"unauthorized"})
+        }
+
+        else if(req.body.password===data.password)
+        {//  token=jwt.generateToken(req.body.email)
+        res.status(200).send(jwt.generateToken(req.body.email))
+        }
+        else 
+        res.status(401).send({message:"credentials are not correct"})
+      })
+  
+    }
 
   // Retrieve and return all notes from the database.
   findAll = (req, res) => {

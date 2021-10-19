@@ -1,11 +1,19 @@
 const userModel = require("../models/user.model.js");
 
 class userService {
-  createUser = (name, age,callback) => {
-    userModel.createUser(name, age,(err,data)=>{
+  createUser = (info,callback) => {
+    userModel.createUser(info,(err,data)=>{
         return err ? callback(err, null) : callback(null, data);
     })
       
+  };
+
+  //lognin method
+  login=(emailId,callback)=>{
+    userModel.fetchUserData(emailId,(err,data)=>{
+      // console.log(data);
+      return err?callback(err,null):callback(null,data);
+    })
   };
 
   findAll = (callback) => {

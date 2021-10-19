@@ -6,6 +6,7 @@ const validate=require("../middlewares/user.middleware");
  
    
     // Create a new Note
+    // route.post('/',validate, controller.createUser);
     route.post('/',validate, controller.createUser);
 
     //logifor user

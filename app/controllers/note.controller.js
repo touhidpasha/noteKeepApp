@@ -1,11 +1,20 @@
 const noteService = require("../services/note.service.js");
+const utils=require("../utils/utils")
 
 class controller {
+
+
   //creates a note in the database
   createNote = (req, res) => {
-    let title = req.body.title || "Untitled Note";
-    let content = req.body.content;
-    noteService.createNote(title, content, (err, data) => {
+
+    if(!utils.verifyUser(req.body.token))
+      res.status(401).send({"message":"please login first"})
+    let info={ "title" : req.body.title,
+   "content": req.body.content,
+   "token":req.body.token
+    }
+    
+    noteService.createNote(info, (err, data) => {
       if (err) {
         res.status(500).send({
           message:

@@ -3,6 +3,9 @@ const UserSchema = mongoose.Schema(
   {
     name: String,
     age: Number,
+    email:{type:String,
+      unique:true},
+    password:String
   },
   {
     timestamps: true,
@@ -13,16 +16,28 @@ const user = mongoose.model("User", UserSchema);
 
 class userModel {
   //creates a note and saves it in database
-  createUser= (name,age, callback) => {
+  createUser= (info, callback) => {
     const tempUser = new user({
-      name:name,
-      age:age,
+      name:info.name,
+      age:info.age,
+      email:info.email,
+      password:info.password
     });
+
     // Save Note in the database
     return tempUser.save((err, data) => {
       return err ? callback(err, null) : callback(null, data);
     });
   };
+
+
+   //fetching data from DB
+    fetchUserData=(email,callback)=>{
+      user.findOne({email:email},(err,data)=>{
+        // console.log(data);
+        return err?callback(err,null):callback(null,data)
+      })
+    }
 
   // Retrieve and return all notes from the database.
   findAll = (callback) => {
@@ -34,6 +49,7 @@ class userModel {
   // Find a single note with a userId
   findOne = (userId, callback) => {
     user.findById(userId, (err, data) => {
+
       return err ? callback(err, null) : callback(null, data);
     });
   };

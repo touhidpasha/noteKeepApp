@@ -1,8 +1,12 @@
 const noteModel = require("../models/note.model.js");
 
 class noteService {
-  createNote = (title, content,callback) => {
-    noteModel.createNote(title, content,(err,data)=>{
+
+  
+
+  createNote = (info,callback) => {
+    
+    noteModel.createNote(info.title, info.content,(err,data)=>{
         return err ? callback(err, null) : callback(null, data);
     })
       
