@@ -26,18 +26,34 @@ app.use('/user',userRouter);
 mongoose.Promise = global.Promise;
 
 // Connecting to the database
-const dbConnect=()=>{
-mongoose.connect(dbConfig.url, {
-    useNewUrlParser: true
-}).then(() => {
+const dbConnect= async ()=>{
+    try {
+        await mongoose.connect(dbConfig.url,{
+        useNewUrlParser: true}
+        );
+    }
+    catch (err) {
+        console.log('Could not connect to the database. Exiting now...', err);
+        logger.error("could not connect to DB");
+        process.exit();
+    }
+
     console.log("Successfully connected to the database");
     logger.info("database connected");
-}).catch(err => {
-    console.log('Could not connect to the database. Exiting now...', err);
-    logger.error("could not connect to DB");
-    process.exit();
-});
 }
+
+// const dbConnect=()=>{
+// mongoose.connect(dbConfig.url, {
+//     useNewUrlParser: true
+// }).then(() => {
+//     console.log("Successfully connected to the database");
+//     logger.info("database connected");
+// }).catch(err => {
+//     console.log('Could not connect to the database. Exiting now...', err);
+//     logger.error("could not connect to DB");
+//     process.exit();
+// });
+// }
 // define a simple route
 // app.get('/', (req, res) => {
 //     res.json({ "message": "Welcome to EasyNotes application. Take notes quickly. Organize and keep track of all your notes." });
@@ -47,7 +63,6 @@ mongoose.connect(dbConfig.url, {
 // require('./app/routes/note.routes.js')(app);
 
 // listen for requests
-app.listen(3000, () => {
-    console.log("Server is listening on port 3000");
+app.listen(3000,()=>{
     dbConnect();
-});
+    console.log("server started");});

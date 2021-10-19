@@ -8,6 +8,9 @@ const validate=require("../middlewares/user.middleware");
     // Create a new Note
     route.post('/',validate, controller.createUser);
 
+    //logifor user
+    route.post('/login',controller.login)
+
     // Retrieve all Notes
     route.get('/', controller.findAll);
 

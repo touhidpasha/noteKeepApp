@@ -1,13 +1,13 @@
 // const logger = require("../controllers/logger");
 const joi = require('joi')
-module.exports = (req, res, next) => {
+module.exports =(req, res, next) => {
     //check if content is present
     // name=req.body.name;
     console.log(req.body.name);
     const joiSchema = joi.object({
         name: joi.string()
             .min(3)
-            .max(20)
+            .max(20).mat
             .required(),
         age:joi.number(),
     });
