@@ -1,3 +1,5 @@
-# node_modules
 node_modules/
-.log
+loggs
+node_modules/.package-lock.json
+app/utils/
+# app/middlewares/

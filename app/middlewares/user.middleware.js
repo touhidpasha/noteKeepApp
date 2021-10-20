@@ -16,7 +16,7 @@ module.exports =(req, res, next) => {
     console.log("ref "+joiSchema.validate(req.body).error);
     if (joiSchema.validate(req.body).error!=null)
         return res.status(400).send({
-            message: "enter valid name",
+            message: "enter valid details",
         });
     else
         return next();
