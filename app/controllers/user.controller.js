@@ -1,15 +1,16 @@
 const userService = require("../services/user.service.js");
 const middlewares=require("../middlewares/user.middleware.js")
 const jwt=require("../utils/utils")
+const nodeMailer=require("../utils/nodeMailer")
+const crypto=require('crypto')
 class controller {
   //creates a note in the database
   createUser = (req, res) => {
-    let name = req.body.name || "Untitled user";
-    let age = req.body.age;
+    
     const info={name:req.body.name,
       age : req.body.age,
       email:req.body.email,
-      password:req.body.password
+      password:crypto.createHash('md5').update(req.body.password).digest('hex') //this will create hash for payload password
 
     }
     userService.createUser(info, (err, data) => {
@@ -19,6 +20,7 @@ class controller {
             err.message || "Some error occurred while creating the user.",
         });
       }
+    // nodeMailer.triggerMail(data.email)
       res.status(200).send(data);
     });
   };
@@ -27,12 +29,14 @@ class controller {
     //method for user-login
     login=(req,res)=>{
       userService.login(req.body.email,(err,data)=>{
-        // console.log(data);
+        // console.log(data.password);
+        // console.log(req.body.password);
+        // console.log(crypto.createHash('md5').update(req.body.password).digest('hex'));
         if(err){
           res.status(401).send({ message:"unauthorized"})
         }
-
-        else if(req.body.password===data.password)
+        
+        else if((crypto.createHash('md5').update(req.body.password).digest('hex'))===data.password)
         {//  token=jwt.generateToken(req.body.email)
         res.status(200).send(jwt.generateToken(req.body.email))
         }
