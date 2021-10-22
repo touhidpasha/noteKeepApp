@@ -1,8 +1,10 @@
 const mongoose = require("mongoose");
 const NoteSchema = mongoose.Schema(
   {
+    userId:String,
     title: String,
     content: String,
+    user: [{ type: String, ref: 'user' }]
   },
   {
     timestamps: true,
@@ -13,10 +15,11 @@ const myNote = mongoose.model("Note", NoteSchema);
 
 class noteModel {
   //creates a note and saves it in database
-  createNote = (title, content, callback) => {
+  createNote = (info, callback) => {
     const note = new myNote({
-      title: title || "Untitled Note",
-      content: content,
+      userId:info.userId,
+      title: info.title || "Untitled Note",
+      content: info.content,
     });
     // Save Note in the database
     return note.save((err, data) => {

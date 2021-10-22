@@ -52,7 +52,8 @@ class controller {
       if (err) {
         res.status(500).send({
           message:
-            err.message || "Some error occurred while creating the user.",
+            err.message || "Some error occurred .",
+
         });
       }
       res.status(200).send(data);
@@ -79,7 +80,7 @@ class controller {
         });
       }
       res.status(200).send({ user: data });
-    });
+    })
   };
 
   // Update a note identified by the userId in the request

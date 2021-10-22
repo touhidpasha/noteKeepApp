@@ -3,9 +3,9 @@ const UserSchema = mongoose.Schema(
   {
     name: String,
     age: Number,
-    email:{type:String,
-      unique:true},
-    password:String
+    email:{type:String,unique:true},
+    password:String,
+    notes: [{ type: String, ref: 'myNote' }]
   },
   {
     timestamps: true,
@@ -48,10 +48,11 @@ class userModel {
 
   // Find a single note with a userId
   findOne = (userId, callback) => {
-    user.findById(userId, (err, data) => {
+    console.log("coming to user model");
+    user.findOne(userId, (err, data) => {
 
       return err ? callback(err, null) : callback(null, data);
-    });
+    }).populate('myNote');
   };
 
   // Update a note identified by the userId in the request

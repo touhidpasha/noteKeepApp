@@ -23,6 +23,7 @@ class userService {
   };
 
   findOne = (findId, callback) => {
+
     userModel.findOne(findId, (err, data) => {
       return err ? callback(err, null) : callback(null, data);
     });

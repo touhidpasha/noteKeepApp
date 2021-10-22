@@ -6,7 +6,7 @@ class noteService {
 
   createNote = (info,callback) => {
     
-    noteModel.createNote(info.title, info.content,(err,data)=>{
+    noteModel.createNote(info,(err,data)=>{
         return err ? callback(err, null) : callback(null, data);
     })
       
