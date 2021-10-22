@@ -8,7 +8,7 @@ triggerMail=(receiverMailId,subject,text)=>{
         service: 'gmail',
         auth: {
             user: 'tpchancham05@gmail.com',
-            pass: ''
+            pass: 'Qwert@05'
         }
     });
     

@@ -18,14 +18,14 @@ class userService {
 
   //forgot password method
   forgotPassword = (email, callback) => {
-    userModel.findOne(email, (err, data) => {
+    userModel.fetchUserData(email, (err, data) => {
       return err ? callback(err, null) : callback(null, data)
     })
   };
 
   //reset pswd method
-resetPasswod=(info,callback)=>{
-  userModel.updateUser(info,(err,data)=>{
+resetPassword=(info,password,callback)=>{
+  userModel.updateUser(info,password,(err,data)=>{
     return err ? callback(err, null) : callback(null, data)
   })
   

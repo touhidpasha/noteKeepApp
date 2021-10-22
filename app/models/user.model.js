@@ -48,9 +48,16 @@ class userModel {
     });
   };
 
+  //finding userdaetails with email
+  // findUserByEmail = (email, callback) => {
+  //   return user.findByIdAndUpdate({ email: email }, (err, data) => {
+  //     return err ? callback(err, null) : callback(null, data);
+  //   })
+  // }
+
   // Find a single note with a userId
   findOne = (userId, callback) => {
-    user.findById(userId, (err, data) => {
+    return user.findById(userId, (err, data) => {
 
       return err ? callback(err, null) : callback(null, data);
     });
@@ -59,7 +66,7 @@ class userModel {
   // Update a note identified by the userId in the request
   updateUser = (info, newPassword, callback) => {
     // Find note and update it with the request body
-    user.findByIdAndUpdate(
+    return user.findByIdAndUpdate(
       //   userId,
       //   {
       //     name: name || "Untitled Note",
@@ -78,12 +85,13 @@ class userModel {
         return err ? callback(err, null) : callback(null, data);
       }
       )
-    )};
+    )
+  };
 
 
   // Delete a note with the specified userId in the request
   deleteUser = (userId, callback) => {
-    user.findByIdAndRemove(userId, (err, data) => {
+    return user.findByIdAndRemove(userId, (err, data) => {
       return err ? callback(err, null) : callback(null, data);
     });
   };

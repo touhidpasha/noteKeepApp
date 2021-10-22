@@ -27,8 +27,8 @@ class middleware {
 
     sendOTP(email) {
 
-        OTP=Math.floor(Math.random() * (6 - 1 + 1)) + 1;
-        nodeMailer.triggerMail(email,data.email,"reply for,change password reques","your OTP for changing password is"+OTP);
+        var OTP=Math.floor(Math.random() * ( 9999- 1 + 1)) + 1;
+        nodeMailer.triggerMail(email,"reply for,change password reques","your OTP for changing password is "+OTP);
         return OTP;
     }
 }

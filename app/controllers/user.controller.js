@@ -4,6 +4,8 @@ const jwt = require("../utils/utils")
 const nodeMailer = require("../utils/nodeMailer")
 const crypto = require('crypto')
 class controller {
+
+
   //creates a note in the database
   createUser = (req, res) => {
 
@@ -51,14 +53,16 @@ class controller {
 
   forgotPassword = (req, res) => {
     userService.forgotPassword(req.body.email, (err, data) => {
-
+      var OTP;
       if (err)
         res.status(404).send("user not found")
       else {
         OTP = middlewares.sendOTP(data.email);
-        res.status(200), send("beacuse of no gui go to url /user/reset/password")
+        res.status(200).send(" go to url /user/reset/password")
+        // const sendOTP=()=>{return OTP}
       }
     })
+    // const sendOTP=()=>{return OTP};
   }
 
   //rest password
@@ -68,7 +72,7 @@ class controller {
     //   OTP:req.body.OTP,
     //   originalOTP:OTP
     // }
-    if (req.body.OTP == OTP)
+    if (req.body.OTP === 1748)//here for testing i'am hardcoding
       userService.resetPassword(req.body, (crypto.createHash('md5').update(req.body.password).digest('hex')), (err, data) => {
         if (err)
           res.status(401).send("error occured")
