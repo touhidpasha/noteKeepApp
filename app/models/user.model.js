@@ -3,9 +3,11 @@ const UserSchema = mongoose.Schema(
   {
     name: String,
     age: Number,
-    email:{type:String,
-      unique:true},
-    password:String
+    email: {
+      type: String,
+      unique: true
+    },
+    password: String
   },
   {
     timestamps: true,
@@ -16,12 +18,12 @@ const user = mongoose.model("User", UserSchema);
 
 class userModel {
   //creates a note and saves it in database
-  createUser= (info, callback) => {
+  createUser = (info, callback) => {
     const tempUser = new user({
-      name:info.name,
-      age:info.age,
-      email:info.email,
-      password:info.password
+      name: info.name,
+      age: info.age,
+      email: info.email,
+      password: info.password
     });
 
     // Save Note in the database
@@ -31,13 +33,13 @@ class userModel {
   };
 
 
-   //fetching data from DB
-    fetchUserData=(email,callback)=>{
-      user.findOne({email:email},(err,data)=>{
-        // console.log(data);
-        return err?callback(err,null):callback(null,data)
-      })
-    }
+  //fetching data from DB
+  fetchUserData = (email, callback) => {
+    user.findOne({ email: email }, (err, data) => {
+      // console.log(data);
+      return err ? callback(err, null) : callback(null, data)
+    })
+  }
 
   // Retrieve and return all notes from the database.
   findAll = (callback) => {
@@ -55,20 +57,29 @@ class userModel {
   };
 
   // Update a note identified by the userId in the request
-  updateUser = (userId, name, age, callback) => {
+  updateUser = (info, newPassword, callback) => {
     // Find note and update it with the request body
     user.findByIdAndUpdate(
-      userId,
-      {
-        name: name || "Untitled Note",
-        age: age,
-      },
-      { new: true },
-      (err, data) => {
+      //   userId,
+      //   {
+      //     name: name || "Untitled Note",
+      //     age: age,
+      //   },
+      //   { new: true },
+      //   (err, data) => {
+      //     return err ? callback(err, null) : callback(null, data);
+      //   }
+      // );
+
+      user.updateOne({
+        email: info.email,
+        password: newPassword
+      }, (err, data) => {
         return err ? callback(err, null) : callback(null, data);
       }
-    );
-  };
+      )
+    )};
+
 
   // Delete a note with the specified userId in the request
   deleteUser = (userId, callback) => {

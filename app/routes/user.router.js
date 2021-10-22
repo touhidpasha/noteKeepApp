@@ -1,16 +1,22 @@
 const controller = require('../controllers/user.controller');
 const express = require("express");
 const route = express.Router();
-const validate=require("../middlewares/user.middleware");
+const middleware=require("../middlewares/user.middleware");
 
  
    
     // Create a new Note
     // route.post('/',validate, controller.createUser);
-    route.post('/',validate, controller.createUser);
+    route.post('/',middleware.validate, controller.createUser);
 
     //logifor user
     route.post('/login',controller.login)
+
+    //forgot password implementation
+    route.post('/forgotPassword',controller.forgotPassword)
+
+    //link for resetting password
+    route.put('/resetPassword',controller.resetPassword)
 
     // Retrieve all Notes
     route.get('/', controller.findAll);

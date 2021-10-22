@@ -2,7 +2,7 @@ var nodemailer = require('nodemailer');
 
 
 class nodeMailer{
-triggerMail=(receiverMailId)=>{
+triggerMail=(receiverMailId,subject,text)=>{
 
     var transporter = nodemailer.createTransport({
         service: 'gmail',
@@ -16,8 +16,8 @@ triggerMail=(receiverMailId)=>{
     var mailOptions = {
         from: 'tpchancham05@gmail.com',
         to: receiverMailId,
-        subject: 'welcome to noteApp',
-        text: 'keep you notes here'
+        subject: subject,
+        text: text
     };
 
     transporter.sendMail(mailOptions, function (error, info) {
