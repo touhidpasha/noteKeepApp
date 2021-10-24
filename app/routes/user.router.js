@@ -15,14 +15,14 @@ const validate=require("../middlewares/user.middleware");
     // Retrieve all Notes
     route.get('/', controller.findAll);
 
-    // Retrieve a single Note with userId
-    route.get('/:userId', controller.findOne);
+    // Retrieve a single Note with emailId
+    route.get('/:emailId', controller.findOne);
 
-    // Update a Note with userId
-    route.put('/:userId', controller.updateUser);
+    // Update a Note with emailId
+    route.put('/:emailId', controller.updateUser);
 
-    // Delete a Note with userId
-    route.delete('/:userId', controller.deleteOne);
+    // Delete a Note with emailId
+    route.delete('/:emailId', controller.deleteOne);
 
 
 module.exports = route;

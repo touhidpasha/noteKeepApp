@@ -60,9 +60,9 @@ class controller {
     });
   };
 
-  // Find a single note with a userId
+  // Find a single note with a emailId
   findOne = (req, res) => {
-    let id = req.params.userId;
+    let id = req.params.emailId;
     userService.findOne(id, (err, data) => {
       if (err) {
         if (err.kind === "ObjectId") {
@@ -83,9 +83,9 @@ class controller {
     })
   };
 
-  // Update a note identified by the userId in the request
+  // Update a note identified by the emailId in the request
   updateUser = (req, res) => {
-    let id = req.params.userId;
+    let id = req.params.emailId;
     let name = req.body.name;
     let age = req.body.age;
     userServiUser(id, name, age, (err, data) => {
@@ -108,9 +108,9 @@ class controller {
     });
   };
 
-  // Delete a note with the specified userId in the request
+  // Delete a note with the specified emailId in the request
   deleteOne = (req, res) => {
-    let id = req.params.userId;
+    let id = req.params.emailId;
     userService.deleteOne(id, (err, data) => {
       if (err) {
         if (err.kind === "ObjectId") {

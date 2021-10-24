@@ -22,22 +22,22 @@ class userService {
     })    
   };
 
-  findOne = (findId, callback) => {
+  findOne = (emailId, callback) => {
 
-    userModel.findOne(findId, (err, data) => {
+    userModel.findOne(emailId, (err, data) => {
       return err ? callback(err, null) : callback(null, data);
     });
   };
 
-  updateUser = (findId, name, age,callback) => {
-    userModel.updateUser(findId,name,age,(err,data) => {
+  updateUser = (emailId, name, age,callback) => {
+    userModel.updateUser(emailId,name,age,(err,data) => {
         return err ? callback(err, null) : callback(null, data);
       }
     );
   };
 
-  deleteOne = (findId,callback) => {
-    userModel.deleteOne(findId,(err,data) => {
+  deleteOne = (emailId,callback) => {
+    userModel.deleteOne(emailId,(err,data) => {
         return err ? callback(err, null) : callback(null, data);
     });
   };

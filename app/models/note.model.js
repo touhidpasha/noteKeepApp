@@ -4,7 +4,7 @@ const NoteSchema = mongoose.Schema(
     userId:String,
     title: String,
     content: String,
-    user: [{ type: String, ref: 'user' }]
+    user: [{ type:mongoose.Schema.Types.ObjectId, ref: 'user' }]
   },
   {
     timestamps: true,
@@ -33,7 +33,6 @@ class noteModel {
       return err ? callback(err, null) : callback(null, data);
     });
   };
-
   // Find a single note with a noteId
   findOne = (noteId, callback) => {
     myNote.findById(noteId, (err, data) => {

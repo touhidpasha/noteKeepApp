@@ -3,9 +3,9 @@ const UserSchema = mongoose.Schema(
   {
     name: String,
     age: Number,
-    email:{type:String,unique:true},
-    password:String,
-    notes: [{ type: String, ref: 'myNote' }]
+    email: { type: String, unique: true },
+    password: String,
+    notes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'myNote' }]
   },
   {
     timestamps: true,
@@ -16,12 +16,12 @@ const user = mongoose.model("User", UserSchema);
 
 class userModel {
   //creates a note and saves it in database
-  createUser= (info, callback) => {
+  createUser = (info, callback) => {
     const tempUser = new user({
-      name:info.name,
-      age:info.age,
-      email:info.email,
-      password:info.password
+      name: info.name,
+      age: info.age,
+      email: info.email,
+      password: info.password
     });
 
     // Save Note in the database
@@ -31,13 +31,13 @@ class userModel {
   };
 
 
-   //fetching data from DB
-    fetchUserData=(email,callback)=>{
-      user.findOne({email:email},(err,data)=>{
-        // console.log(data);
-        return err?callback(err,null):callback(null,data)
-      })
-    }
+  //fetching data from DB
+  fetchUserData = (email, callback) => {
+    user.findOne({ email: email }, (err, data) => {
+      // console.log(data);
+      return err ? callback(err, null) : callback(null, data)
+    })
+  }
 
   // Retrieve and return all notes from the database.
   findAll = (callback) => {
@@ -47,19 +47,19 @@ class userModel {
   };
 
   // Find a single note with a userId
-  findOne = (userId, callback) => {
-    console.log("coming to user model");
-    user.findOne(userId, (err, data) => {
-
+  findOne = (emailId, callback) => {
+    console.log("coming inside user model");
+    user.findOne({ email: emailId }, (err, data) => {
+      console.log("coming inside 2");
       return err ? callback(err, null) : callback(null, data);
-    }).populate('myNote');
+    }).populate('title'); ///populate method to join two collce
   };
 
-  // Update a note identified by the userId in the request
-  updateUser = (userId, name, age, callback) => {
+  // Update a note identified by the {email:emailId} in the request
+  updateUser = (emailId, name, age, callback) => {
     // Find note and update it with the request body
-    user.findByIdAndUpdate(
-      userId,
+    user.updateOne(
+      { email: emailId },
       {
         name: name || "Untitled Note",
         age: age,
@@ -72,8 +72,8 @@ class userModel {
   };
 
   // Delete a note with the specified userId in the request
-  deleteUser = (userId, callback) => {
-    user.findByIdAndRemove(userId, (err, data) => {
+  deleteUser = ({ email: emailId }, callback) => {
+    user.deleteOne(emailId, (err, data) => {
       return err ? callback(err, null) : callback(null, data);
     });
   };
