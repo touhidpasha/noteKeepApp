@@ -1,5 +1,5 @@
 const noteService = require("../services/note.service.js");
-const utils=require("../utils/utils")
+const utils = require("../utils/utils")
 
 class controller {
 
@@ -7,21 +7,22 @@ class controller {
   //creates a note in the database
   createNote = (req, res) => {
 
-    if(!utils.verifyUser(req.body.token))
-      res.status(401).send({"message":"please login first"})
-    let info={ "title" : req.body.title,
-   "content": req.body.content,
-   "token":req.body.token
+    if (!utils.verifyUser(req.body.token))
+      return res.status(401).send({ "message": "please login first" })
+    let info = {
+      "title": req.body.title,
+      "content": req.body.content,
+      "email":req.body.email
     }
-    
+
     noteService.createNote(info, (err, data) => {
       if (err) {
-        res.status(500).send({
+       return res.status(500).send({
           message:
             err.message || "Some error occurred while creating the Note.",
         });
       }
-      res.status(200).send(data);
+      return res.status(200).send(data);
     });
   };
 
@@ -82,7 +83,7 @@ class controller {
           message: "Note not found with id " + id,
         });
       }
-      res.send({ message:"Update Succesfull",Note: data });
+      res.send({ message: "Update Succesfull", Note: data });
     });
   };
 

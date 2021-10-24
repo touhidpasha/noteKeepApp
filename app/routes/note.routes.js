@@ -6,7 +6,7 @@ const validate=require("../middlewares/note.middleware");
  
    
     // Create a new Note
-    route.post('/',validate, controller.createNote);
+    route.post('/', controller.createNote);
 
     // Retrieve all Notes
     route.get('/', controller.findAll);

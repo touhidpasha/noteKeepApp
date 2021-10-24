@@ -3,6 +3,7 @@ const NoteSchema = mongoose.Schema(
   {
     title: String,
     content: String,
+    email:String
   },
   {
     timestamps: true,
@@ -13,10 +14,11 @@ const myNote = mongoose.model("Note", NoteSchema);
 
 class noteModel {
   //creates a note and saves it in database
-  createNote = (title, content, callback) => {
+  createNote = (info, callback) => {
     const note = new myNote({
-      title: title || "Untitled Note",
-      content: content,
+      title: info.title ,
+      content: info.content,
+      email:info.email
     });
     // Save Note in the database
     return note.save((err, data) => {

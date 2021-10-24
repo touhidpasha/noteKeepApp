@@ -10,18 +10,20 @@ class utilities {
             {
                 expiresIn: "2h",
             }))
- }
+    }
 
- verifyUser=(token)=>{
-     try{
-    temp=(jwt.verify(token,data.secret_key))
-     return true
- }
- catch{
-    //  console.log(err);
-     return false;
- }
-}
+    verifyUser = (token) => {
+        try {
+            // console.log("before verify");
+            (jwt.verify(token, data.secret_key))
+            // console.log("after verify");
+            return true
+        }
+        catch {
+            //  console.log(err);
+            return false;
+        }
+    }
 }
 
 module.exports = new utilities();
