@@ -5,7 +5,7 @@ const UserSchema = mongoose.Schema(
     age: Number,
     email: { type: String, unique: true },
     password: String,
-    notes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'myNote' }]
+    notes: { type: mongoose.Schema.Types.ObjectId, ref: 'myNote' }
   },
   {
     timestamps: true,
@@ -49,10 +49,18 @@ class userModel {
   // Find a single note with a userId
   findOne = (emailId, callback) => {
     console.log("coming inside user model");
-    user.findOne({ email: emailId }, (err, data) => {
-      console.log("coming inside 2");
-      return err ? callback(err, null) : callback(null, data);
-    }).populate('title'); ///populate method to join two collce
+    user.findOne({ email: emailId })
+      .populate({
+        path: "email",
+        select: ["title", "content"]
+      })
+      .exec((err, data) => {
+        console.log("coming inside 2");
+        console.log(data);
+        console.log(err);
+        return err ? callback(err, null) : callback(null, data)
+      })
+    ///populate method to join two collce
   };
 
   // Update a note identified by the {email:emailId} in the request
