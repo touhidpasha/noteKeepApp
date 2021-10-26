@@ -3,6 +3,8 @@ const express = require("express");
 const route = express.Router();
 const validate=require("../middlewares/note.middleware");
 
+
+
  
    
     // Create a new Note

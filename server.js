@@ -5,6 +5,9 @@ const dbConfig = require('./config/database.config.js');
 const mongoose = require('mongoose');
 const noteRouter=require('./app/routes/note.routes.js');
 const userRouter=require('./app/routes/user.router');
+const swaggerUi=require('swagger-ui-express')
+const swaggerDocument=require('./swagger.json')
+// const swaggerJsDoc=require('swagger-jsdoc')
 // create express app
 const app = express();
 
@@ -14,6 +17,19 @@ const app = express();
 // // parse requests of content-type - application/json
 // app.use(bodyParser.json())
 
+//swagger docs
+// const swaggerOptions={
+//     swaggerDefinition:{
+//         info:{
+//             title:"noteKeepApp API",
+//             servers:['http://localhost:3000']
+//         }
+//     },
+//     // apis:["server.js"]
+//     apis:['./app/routes/note.routes.js']
+// }
+// const swaggerDocs=swaggerJsDoc(swaggerOptions) //documention object
+
 // Configuring the database
 
 app.use(express.urlencoded({
@@ -22,6 +38,11 @@ app.use(express.urlencoded({
 app.use(express.json())
 app.use('/note',noteRouter);
 app.use('/user',userRouter);
+
+app.use('/api-docs',swaggerUi.serve,swaggerUi.setup(swaggerDocument))
+// app.use("/api-docs",swaggerUi.serve,swaggerUi.setup(swagerDocs))
+// noteRouter.use('/note', swaggerUi.serve);
+// noteRouter.get('/note', swaggerUi.setup(swaggerDocs));
 
 mongoose.Promise = global.Promise;
 
@@ -41,6 +62,11 @@ const dbConnect= async ()=>{
     console.log("Successfully connected to the database");
     logger.info("database connected");
 }
+
+app.listen(3000,()=>{
+    dbConnect();
+    console.log("server started");});
+
 
 // const dbConnect=()=>{
 // mongoose.connect(dbConfig.url, {
@@ -63,6 +89,3 @@ const dbConnect= async ()=>{
 // require('./app/routes/note.routes.js')(app);
 
 // listen for requests
-app.listen(3000,()=>{
-    dbConnect();
-    console.log("server started");});
