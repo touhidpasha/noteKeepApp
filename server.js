@@ -6,7 +6,8 @@ const mongoose = require('mongoose');
 const noteRouter=require('./app/routes/note.routes.js');
 const userRouter=require('./app/routes/user.router');
 const swaggerUi=require('swagger-ui-express')
-const swaggerJsDoc=require('swagger-jsdoc')
+const swaggerDocument=require('./swagger.json')
+// const swaggerJsDoc=require('swagger-jsdoc')
 // create express app
 const app = express();
 
@@ -17,17 +18,17 @@ const app = express();
 // app.use(bodyParser.json())
 
 //swagger docs
-const swaggerOptions={
-    swaggerDefinition:{
-        info:{
-            title:"noteKeepApp API",
-            servers:['http://localhost:3000']
-        }
-    },
-    // apis:["server.js"]
-    apis:['./app/routes/note.routes.js']
-}
-const swaggerDocs=swaggerJsDoc(swaggerOptions) //documention object
+// const swaggerOptions={
+//     swaggerDefinition:{
+//         info:{
+//             title:"noteKeepApp API",
+//             servers:['http://localhost:3000']
+//         }
+//     },
+//     // apis:["server.js"]
+//     apis:['./app/routes/note.routes.js']
+// }
+// const swaggerDocs=swaggerJsDoc(swaggerOptions) //documention object
 
 // Configuring the database
 
@@ -35,11 +36,13 @@ app.use(express.urlencoded({
     extended: false
 }))
 app.use(express.json())
-// app.use('/note',noteRouter);
-// app.use('/user',userRouter);
+app.use('/note',noteRouter);
+app.use('/user',userRouter);
+
+app.use('/api-docs',swaggerUi.serve,swaggerUi.setup(swaggerDocument))
 // app.use("/api-docs",swaggerUi.serve,swaggerUi.setup(swagerDocs))
-noteRouter.use('/note', swaggerUi.serve);
-noteRouter.get('/note', swaggerUi.setup(swaggerDocs));
+// noteRouter.use('/note', swaggerUi.serve);
+// noteRouter.get('/note', swaggerUi.setup(swaggerDocs));
 
 mongoose.Promise = global.Promise;
 
