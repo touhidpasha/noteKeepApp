@@ -1,8 +1,9 @@
 const mongoose = require("mongoose");
 const UserSchema = mongoose.Schema(
   {
-    name: String,
-    age: Number,
+    firstName: String,
+    lastName:String,
+    // age: Number,
     email: {
       type: String,
       unique: true
@@ -20,8 +21,9 @@ class userModel {
   //creates a note and saves it in database
   createUser = (info, callback) => {
     const tempUser = new user({
-      name: info.name,
-      age: info.age,
+      firstName: info.firstName,
+      lastName:info.lastName,
+      // age: info.age,
       email: info.email,
       password: info.password
     });

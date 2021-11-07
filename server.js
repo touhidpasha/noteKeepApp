@@ -3,10 +3,11 @@ const express = require('express');
 const logger = require('./config/logger.config')
 const dbConfig = require('./config/database.config.js');
 const mongoose = require('mongoose');
-const noteRouter=require('./app/routes/note.routes.js');
-const userRouter=require('./app/routes/user.router');
-const swaggerUi=require('swagger-ui-express')
-const swaggerDocument=require('./swagger.json')
+const noteRouter = require('./app/routes/note.routes.js');
+const userRouter = require('./app/routes/user.router');
+const swaggerUi = require('swagger-ui-express')
+const swaggerDocument = require('./swagger.json')
+const cors = require('cors')
 // const swaggerJsDoc=require('swagger-jsdoc')
 // create express app
 const app = express();
@@ -32,25 +33,37 @@ const app = express();
 
 // Configuring the database
 
+var corsOptions = {
+    origin: 'http://localhost:3000',
+    // credentials:true,  
+    optionsSuccessStatus: 200,// some legacy browsers (IE11, various SmartTVs) choke on 204
+
+}
+app.use(cors(corsOptions))
 app.use(express.urlencoded({
     extended: false
 }))
 app.use(express.json())
-app.use('/note',noteRouter);
-app.use('/user',userRouter);
+app.use('/note', noteRouter);
+app.use('/user', userRouter);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
-app.use('/api-docs',swaggerUi.serve,swaggerUi.setup(swaggerDocument))
+
 // app.use("/api-docs",swaggerUi.serve,swaggerUi.setup(swagerDocs))
 // noteRouter.use('/note', swaggerUi.serve);
 // noteRouter.get('/note', swaggerUi.setup(swaggerDocs));
 
+// app.options("*", cors({ origin: 'http://localhost:3000', optionsSuccessStatus: 200 })); //enabling cross-origin requests
+// app.use(cors({ origin: "http://localhost:3000", optionsSuccessStatus: 200 }));
+
 mongoose.Promise = global.Promise;
 
 // Connecting to the database
-const dbConnect= async ()=>{
+const dbConnect = async () => {
     try {
-        await mongoose.connect(dbConfig.url,{
-        useNewUrlParser: true}
+        await mongoose.connect(dbConfig.url, {
+            useNewUrlParser: true
+        }
         );
     }
     catch (err) {
@@ -63,9 +76,10 @@ const dbConnect= async ()=>{
     logger.info("database connected");
 }
 
-app.listen(3000,()=>{
+app.listen(5000, () => {
     dbConnect();
-    console.log("server started");});
+    console.log("server started");
+});
 
 
 // const dbConnect=()=>{

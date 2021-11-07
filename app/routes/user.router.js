@@ -2,12 +2,17 @@ const controller = require('../controllers/user.controller');
 const express = require("express");
 const route = express.Router();
 const middleware=require("../middlewares/user.middleware");
+// const cors=require('cors')
 
  
-   
+// var corsOptions = {
+//     origin: 'http://localhost:3000',
+//     optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+//   }   
+
     // Create a new Note
-    // route.post('/',validate, controller.createUser);
-    route.post('/',middleware.validate, controller.createUser);
+    route.post('/',controller.createUser);
+    // route.post('/',middleware.validate, controller.createUser);
 
     //logifor user
     route.post('/login',controller.login)
@@ -15,11 +20,16 @@ const middleware=require("../middlewares/user.middleware");
     //forgot password implementation
     route.post('/forgotPassword',controller.forgotPassword)
 
+    //OTP verification
+    route.post('/verifyOTP',controller.verifyOTP)
+
     //link for resetting password
     route.put('/resetPassword',controller.resetPassword)
 
     // Retrieve all Notes
+    // route.get('/',cors(corsOptions), controller.findAll);
     route.get('/', controller.findAll);
+
 
     // Retrieve a single Note with userId
     route.get('/:userId', controller.findOne);
