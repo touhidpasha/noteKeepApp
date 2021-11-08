@@ -1,5 +1,4 @@
 const express = require('express');
-// const bodyParser = require('body-parser');
 const logger = require('./config/logger.config')
 const dbConfig = require('./config/database.config.js');
 const mongoose = require('mongoose');
@@ -8,36 +7,13 @@ const userRouter = require('./app/routes/user.router');
 const swaggerUi = require('swagger-ui-express')
 const swaggerDocument = require('./swagger.json')
 const cors = require('cors')
-// const swaggerJsDoc=require('swagger-jsdoc')
-// create express app
+    // create express app
 const app = express();
-
-// parse requests of content-type - application/x-www-form-urlencoded
-// app.use(bodyParser.urlencoded({ extended: true }))
-
-// // parse requests of content-type - application/json
-// app.use(bodyParser.json())
-
-//swagger docs
-// const swaggerOptions={
-//     swaggerDefinition:{
-//         info:{
-//             title:"noteKeepApp API",
-//             servers:['http://localhost:3000']
-//         }
-//     },
-//     // apis:["server.js"]
-//     apis:['./app/routes/note.routes.js']
-// }
-// const swaggerDocs=swaggerJsDoc(swaggerOptions) //documention object
-
-// Configuring the database
 
 var corsOptions = {
     origin: 'http://localhost:3000',
     // credentials:true,  
-    optionsSuccessStatus: 200,// some legacy browsers (IE11, various SmartTVs) choke on 204
-
+    optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
 app.use(cors(corsOptions))
 app.use(express.urlencoded({
@@ -48,25 +24,15 @@ app.use('/note', noteRouter);
 app.use('/user', userRouter);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
-
-// app.use("/api-docs",swaggerUi.serve,swaggerUi.setup(swagerDocs))
-// noteRouter.use('/note', swaggerUi.serve);
-// noteRouter.get('/note', swaggerUi.setup(swaggerDocs));
-
-// app.options("*", cors({ origin: 'http://localhost:3000', optionsSuccessStatus: 200 })); //enabling cross-origin requests
-// app.use(cors({ origin: "http://localhost:3000", optionsSuccessStatus: 200 }));
-
 mongoose.Promise = global.Promise;
 
 // Connecting to the database
-const dbConnect = async () => {
+const dbConnect = async() => {
     try {
         await mongoose.connect(dbConfig.url, {
             useNewUrlParser: true
-        }
-        );
-    }
-    catch (err) {
+        });
+    } catch (err) {
         console.log('Could not connect to the database. Exiting now...', err);
         logger.error("could not connect to DB");
         process.exit();
@@ -80,26 +46,3 @@ app.listen(5000, () => {
     dbConnect();
     console.log("server started");
 });
-
-
-// const dbConnect=()=>{
-// mongoose.connect(dbConfig.url, {
-//     useNewUrlParser: true
-// }).then(() => {
-//     console.log("Successfully connected to the database");
-//     logger.info("database connected");
-// }).catch(err => {
-//     console.log('Could not connect to the database. Exiting now...', err);
-//     logger.error("could not connect to DB");
-//     process.exit();
-// });
-// }
-// define a simple route
-// app.get('/', (req, res) => {
-//     res.json({ "message": "Welcome to EasyNotes application. Take notes quickly. Organize and keep track of all your notes." });
-// });
-
-// Require Notes routes
-// require('./app/routes/note.routes.js')(app);
-
-// listen for requests

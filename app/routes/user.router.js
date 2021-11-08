@@ -1,44 +1,34 @@
 const controller = require('../controllers/user.controller');
 const express = require("express");
 const route = express.Router();
-const middleware=require("../middlewares/user.middleware");
-// const cors=require('cors')
+const middleware = require("../middlewares/user.middleware");
+// Create a new Note
+route.post('/', controller.createUser);
+// route.post('/',middleware.validate, controller.createUser);
 
- 
-// var corsOptions = {
-//     origin: 'http://localhost:3000',
-//     optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
-//   }   
+//logifor user
+route.post('/login', controller.login)
 
-    // Create a new Note
-    route.post('/',controller.createUser);
-    // route.post('/',middleware.validate, controller.createUser);
+//forgot password implementation
+route.post('/forgotPassword', controller.forgotPassword)
 
-    //logifor user
-    route.post('/login',controller.login)
+//OTP verification
+route.post('/verifyOTP', controller.verifyOTP)
 
-    //forgot password implementation
-    route.post('/forgotPassword',controller.forgotPassword)
+//link for resetting password
+route.put('/resetPassword', controller.resetPassword)
 
-    //OTP verification
-    route.post('/verifyOTP',controller.verifyOTP)
+// Retrieve all Notes
+// route.get('/',cors(corsOptions), controller.findAll);
+route.get('/', controller.findAll);
 
-    //link for resetting password
-    route.put('/resetPassword',controller.resetPassword)
+// Retrieve a single Note with userId
+route.get('/:userId', controller.findOne);
 
-    // Retrieve all Notes
-    // route.get('/',cors(corsOptions), controller.findAll);
-    route.get('/', controller.findAll);
+// Update a Note with userId
+route.put('/:userId', controller.updateUser);
 
-
-    // Retrieve a single Note with userId
-    route.get('/:userId', controller.findOne);
-
-    // Update a Note with userId
-    route.put('/:userId', controller.updateUser);
-
-    // Delete a Note with userId
-    route.delete('/:userId', controller.deleteOne);
-
+// Delete a Note with userId
+route.delete('/:userId', controller.deleteOne);
 
 module.exports = route;
