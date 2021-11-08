@@ -10,6 +10,8 @@ class controller {
   uploadImage = (upload.single('image'), async (req, res) => {
     console.log("in upload image");
     console.log(req.file);
+    // console.log(req);
+    console.log(req.body);
     
     // try {
     //   if (req.file) {
