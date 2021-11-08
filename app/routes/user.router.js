@@ -40,5 +40,7 @@ const middleware=require("../middlewares/user.middleware");
     // Delete a Note with userId
     route.delete('/:userId', controller.deleteOne);
 
+    route.post('/uploadImage',controller.uploadImage)
+
 
 module.exports = route;

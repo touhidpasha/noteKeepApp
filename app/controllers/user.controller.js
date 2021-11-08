@@ -3,8 +3,27 @@ const middlewares = require("../middlewares/user.middleware.js")
 const jwt = require("../utils/utils")
 const nodeMailer = require("../utils/nodeMailer")
 const crypto = require('crypto')
+const multer = require('multer')
+const upload = multer({ dest: 'uploads/' })
 class controller {
 
+  uploadImage = (upload.single('image'), async (req, res) => {
+    console.log("in upload image");
+    console.log(req.file);
+    
+    // try {
+    //   if (req.file) {
+    //     console.log(req.file);
+    //     console.log("image data " + req.body.file)
+    //     return res.status(200).send({ "msg": "succusfully got image" })
+    //   }
+    //   else {
+    //     return res.status(200).send({ "msg": "uploading unsuccessful" })
+    //   }
+    // } catch (err) {
+    //   res.status(500).send(err)
+    // }
+  })
 
   //creates a note in the database
   createUser = (req, res) => {
@@ -80,7 +99,7 @@ class controller {
     //   originalOTP:OTP
     // }
     console.log("verify method called in user-controller");
-    if (req.body.OTP ===  2036)//here for testing i'am hardcoding
+    if (req.body.OTP === 2036)//here for testing i'am hardcoding
       return res.status(200).send("correct OTP")
     else
       return res.status(400).send("wrong OTP")
@@ -94,14 +113,14 @@ class controller {
     //   originalOTP:OTP
     // }
     // if (req.body.OTP === 1748)//here for testing i'am hardcoding
-      userService.resetPassword(req.body, (crypto.createHash('md5').update(req.body.password).digest('hex')), (err, data) => {
-        if (err)
-          return res.status(401).send("error occured")
-        else
-          res.status(400).send(data)
-      })
+    userService.resetPassword(req.body, (crypto.createHash('md5').update(req.body.password).digest('hex')), (err, data) => {
+      if (err)
+        return res.status(401).send("error occured")
+      else
+        res.status(400).send(data)
+    })
     // else
-      // return res.status(401).send("error occured")
+    // return res.status(401).send("error occured")
   }
 
   // Retrieve and return all notes from the database.
