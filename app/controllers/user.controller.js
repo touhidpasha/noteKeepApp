@@ -31,17 +31,27 @@ class controller {
 
     //method for user-login
     login = (req, res) => {
+        var token;
         console.log("login user-controller");
-        userService.login(req.body.email, (err, data) => {
+        console.log(req.body);
+        userService.login({ "email": req.body.email }, (err, data) => {
             // console.log(data.password);
             // console.log(req.body.password);
             // console.log(crypto.createHash('md5').update(req.body.password).digest('hex'));
             if (err) {
-                return res.status(401).send({ message: "unauthorized" })
+                return res.status(401).send({ message: "user not found" })
             } else if ((crypto.createHash('md5').update(req.body.password).digest('hex')) === data.password) { //  token=jwt.generateToken(req.body.email)
                 console.log("login succesfull");
-                console.log(jwt.generateToken(req.body.email));
-                return res.status(200).send(jwt.generateToken(req.body.email))
+                token = jwt.generateToken(req.body.email);
+                console.log("token: " + token);
+
+                userService.updateToken({ "email": req.body.email, "token": token }, (err, data) => {
+                    if (err)
+                        return res.status(401).send({ "message": "error occured while updatting" })
+                    else
+                        return res.status(200).send({ "token": token })
+                })
+
             } else
                 return res.status(401).send({ message: "credentials are not correct" })
         })
@@ -52,19 +62,28 @@ class controller {
     //forgot psw impl
 
     forgotPassword = (req, res) => {
-        console.log("forgot pasd called in user-contoller");
+        console.log("forgot pasd called in user-contoller" + req.body.email);
         userService.forgotPassword(req.body.email, (err, data) => {
-                var OTP;
-                if (err)
-                    return res.status(404).send("user not found")
-                else {
-                    OTP = middlewares.sendOTP(data.email);
-                    console.log("OTP has sent succesfully");
-                    return res.status(200).send(" check your email")
-                        // const sendOTP=()=>{return OTP}
-                }
-            })
-            // const sendOTP=()=>{return OTP};
+            var OTP;
+            if (err)
+                return res.status(404).send({ "msg": "user not found" })
+            else {
+                OTP = middlewares.sendOTP(data.email);
+                console.log("OTP has generated");
+                userService.saveOTP({ "email": data.email, "OTP": OTP }, (err, info) => {
+                    if (err) {
+                        return res.status(500).send({ "msg": "some issue in server,try again" })
+
+                    }
+                    else {
+                        return res.status(200).send({ "msg": "otp has been delivered to " + data.email })
+
+                    }
+                })
+                // const sendOTP=()=>{return OTP}
+            }
+        })
+        // const sendOTP=()=>{return OTP};
     }
 
 
@@ -75,11 +94,35 @@ class controller {
         //   OTP:req.body.OTP,
         //   originalOTP:OTP
         // }
-        console.log("verify method called in user-controller");
-        if (req.body.OTP === 2036) //here for testing i'am hardcoding
-            return res.status(200).send("correct OTP")
-        else
-            return res.status(400).send("wrong OTP")
+        console.log("verify method called in user-controller" + req.body.email);
+
+        userService.fetchUserData(req.body, (err, data) => {
+            if (err)
+                return (res.status(500).send({ "message": "error occured in server" }))
+            else {
+
+                console.log(req.body.OTP +" and "+data.OTP);
+                if (req.body.OTP == data.OTP) //here for testing i'am hardcoding
+                {
+                    console.log("correct OTP");
+                    return res.status(200).send({ "message":"correct OTP"})
+                }
+                else {
+                    console.log("wrong OTP");
+                    return res.status(401).send({ "message":"wrong OTP1"})
+                   
+                }
+
+            }
+            // else {
+            //     return res.status(400).send({ "message": "wrong OTP" })
+
+            // }
+            // }
+        })
+
+
+
     }
 
     //rest password
@@ -90,14 +133,28 @@ class controller {
         //   originalOTP:OTP
         // }
         // if (req.body.OTP === 1748)//here for testing i'am hardcoding
-        userService.resetPassword(req.body, (crypto.createHash('md5').update(req.body.password).digest('hex')), (err, data) => {
-                if (err)
-                    return res.status(401).send("error occured")
-                else
-                    res.status(400).send(data)
-            })
-            // else
-            // return res.status(401).send("error occured")
+
+        userService.fetchUserData(req.body, (err, data) => {
+            if (err)
+                return (res.status(500).send({ "message": "error occured in server" }))
+            else {
+                // if (data.OTP === req.body.OTP) {
+                userService.resetPassword(req.body, (crypto.createHash('md5').update(req.body.password).digest('hex')), (err, data) => {
+                    if (err)
+                        return res.status(500).send({ "message": "error occured while updatting" })
+                    else
+                        return res.status(200).send({ "message": "password updated successfully" })
+                })
+            }
+            // else {
+            //     return res.status(400).send({ "message": "wrong OTP" })
+
+            // }
+            // }
+        })
+
+        // else
+        // return res.status(401).send("error occured")
     }
 
     // Retrieve and return all notes from the database.
@@ -136,29 +193,29 @@ class controller {
     };
 
     // Update a note identified by the userId in the request
-    updateUser = (req, res) => {
-        let id = req.params.userId;
-        let name = req.body.name;
-        let age = req.body.age;
-        userServiUser(id, name, age, (err, data) => {
-            if (err) {
-                if (err.kind === "ObjectId") {
-                    return res.status(404).send({
-                        message: "user not found with id " + id,
-                    });
-                }
-                return res.status(500).send({
-                    message: "Error updating user with id " + id,
-                });
-            }
-            if (!data) {
-                return res.status(404).send({
-                    message: "user not found with id " + id,
-                });
-            }
-            return res.send({ message: "Update Succesfull", user: data });
-        });
-    };
+    // updateUser = (req, res) => {
+    //     let id = req.params.userId;
+    //     let name = req.body.name;
+    //     let age = req.body.age;
+    //     userService.updateUser(id, name, age, (err, data) => {
+    //         if (err) {
+    //             if (err.kind === "ObjectId") {
+    //                 return res.status(404).send({
+    //                     message: "user not found with id " + id,
+    //                 });
+    //             }
+    //             return res.status(500).send({
+    //                 message: "Error updating user with id " + id,
+    //             });
+    //         }
+    //         if (!data) {
+    //             return res.status(404).send({
+    //                 message: "user not found with id " + id,
+    //             });
+    //         }
+    //         return res.send({ message: "Update Succesfull", user: data });
+    //     });
+    // };
 
     // Delete a note with the specified userId in the request
     deleteOne = (req, res) => {

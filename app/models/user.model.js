@@ -2,13 +2,15 @@ const mongoose = require("mongoose");
 const UserSchema = mongoose.Schema(
   {
     firstName: String,
-    lastName:String,
+    lastName: String,
     // age: Number,
     email: {
       type: String,
       unique: true
     },
-    password: String
+    password: String,
+    token: String,
+    OTP: Number
   },
   {
     timestamps: true,
@@ -22,10 +24,12 @@ class userModel {
   createUser = (info, callback) => {
     const tempUser = new user({
       firstName: info.firstName,
-      lastName:info.lastName,
+      lastName: info.lastName,
       // age: info.age,
       email: info.email,
-      password: info.password
+      password: info.password,
+      token: "",
+      OTP: 1111
     });
 
     // Save Note in the database
@@ -36,8 +40,8 @@ class userModel {
 
 
   //fetching data from DB
-  fetchUserData = (email, callback) => {
-    user.findOne({ email: email }, (err, data) => {
+  fetchUserData = (data, callback) => {
+    user.findOne({ email: data.email }, (err, data) => {
       // console.log(data);
       return err ? callback(err, null) : callback(null, data)
     })
@@ -66,28 +70,17 @@ class userModel {
   };
 
   // Update a note identified by the userId in the request
-  updateUser = (info, newPassword, callback) => {
-    // Find note and update it with the request body
-    return user.findByIdAndUpdate(
-      //   userId,
-      //   {
-      //     name: name || "Untitled Note",
-      //     age: age,
-      //   },
-      //   { new: true },
-      //   (err, data) => {
-      //     return err ? callback(err, null) : callback(null, data);
-      //   }
-      // );
+  updateUser = (data, callback) => {
 
-      user.updateOne({
-        email: info.email,
-        password: newPassword
-      }, (err, data) => {
+    return user.updateOne(
+      { email: data.email }, {
+      password:data.password
+    }
+      , (err, data) => {
         return err ? callback(err, null) : callback(null, data);
       }
-      )
     )
+    // )
   };
 
 
@@ -97,6 +90,29 @@ class userModel {
       return err ? callback(err, null) : callback(null, data);
     });
   };
-}
 
+  saveOTP = (data, callback) => {
+    // return user.findByIdAndUpdate(
+
+    return user.updateOne({
+      email: data.email
+    }, {
+      OTP: data.OTP
+    }, (err, data) => {
+      return err ? callback(err, null) : callback(null, data);
+    }
+    )
+    // )
+
+  }
+
+  updateToken = (data, callback) => {
+    // return user.findByIdAndUpdate(
+    return user.updateOne({ email: data.email},{ token: data.token }, (err, data) => {
+      return err ? callback(err, null) : callback(null, data)
+    }
+    )
+    // )
+  }
+}
 module.exports = new userModel();

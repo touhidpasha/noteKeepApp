@@ -10,7 +10,7 @@ route.post('/', controller.createUser);
 route.post('/login', controller.login)
 
 //forgot password implementation
-route.post('/forgotPassword', controller.forgotPassword)
+route.put('/forgotPassword', controller.forgotPassword)
 
 //OTP verification
 route.post('/verifyOTP', controller.verifyOTP)
@@ -26,7 +26,7 @@ route.get('/', controller.findAll);
 route.get('/:userId', controller.findOne);
 
 // Update a Note with userId
-route.put('/:userId', controller.updateUser);
+// route.put('/:userId', controller.updateUser);
 
 // Delete a Note with userId
 route.delete('/:userId', controller.deleteOne);

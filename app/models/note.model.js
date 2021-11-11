@@ -42,9 +42,9 @@ class noteModel {
         // Find note and update it with the request body
         myNote.findByIdAndUpdate(
             noteId, {
-                title: title || "Untitled Note",
-                content: content,
-            }, { new: true },
+            title: title || "Untitled Note",
+            content: content,
+        }, { new: true },
             (err, data) => {
                 return err ? callback(err, null) : callback(null, data);
             }
