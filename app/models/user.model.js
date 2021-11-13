@@ -29,7 +29,7 @@ class userModel {
       email: info.email,
       password: info.password,
       token: "",
-      OTP: 1111
+      OTP: null
     });
 
     // Save Note in the database
