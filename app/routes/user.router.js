@@ -6,6 +6,9 @@ const middleware = require("../middlewares/user.middleware");
 route.post('/', controller.createUser);
 // route.post('/',middleware.validate, controller.createUser);
 
+// //logifor user
+// route.get('/getUserDetails', controller.login)
+
 //logifor user
 route.post('/login', controller.login)
 

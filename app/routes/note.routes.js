@@ -7,7 +7,7 @@ const validate = require("../middlewares/note.middleware");
 route.post('/', controller.createNote);
 
 // Retrieve all Notes
-route.get('/', controller.findAll);
+route.post('/getnotes', controller.findAll);
 
 // Retrieve a single Note with noteId
 route.get('/:noteId', controller.findOne);

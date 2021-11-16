@@ -12,8 +12,8 @@ class noteService {
 
     };
 
-    findAll = (callback) => {
-        noteModel.findAll((err, data) => {
+    findAll = (req,callback) => {
+        noteModel.findAll(req,(err, data) => {
             return err ? callback(err, null) : callback(null, data);
         })
     };

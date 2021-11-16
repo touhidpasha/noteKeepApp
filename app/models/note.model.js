@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const NoteSchema = mongoose.Schema({
     title: String,
     content: String,
-    email: String
+    email: { type: mongoose.Schema.Types.String, ref: "User" },
 }, {
     timestamps: true,
 });
@@ -24,10 +24,21 @@ class noteModel {
     };
 
     // Retrieve and return all notes from the database.
-    findAll = (callback) => {
-        return myNote.find((err, data) => {
-            return err ? callback(err, null) : callback(null, data);
-        });
+    findAll = (req, callback) => {
+        console.log(req.email);
+        return myNote.find({email: req.email}, (err, data)=>{
+            return err?callback(err, null): callback(null, data);
+        })
+        // return myNote.find({ email: req.body.email })
+        //     .populate({
+        //         path: "email",
+        //         select: ["title", "content", "email"]
+        //     })
+        //     .exec((err, data) => {
+        //         console.log(err);
+        //         console.log(data);
+        //         return err ? callback(err, null) : callback(null, data);
+        //     });
     };
 
     // Find a single note with a noteId

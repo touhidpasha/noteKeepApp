@@ -47,7 +47,7 @@ class controller {
 
                 userService.updateToken({ "email": req.body.email, "token": token }, (err, data) => {
                     if (err)
-                        return res.status(401).send({ "message": "error occured while updatting" })
+                        return res.status(500).send({ "message": "error occured while updatting" })
                     else
                         return res.status(200).send({ "token": token })
                 })
@@ -109,7 +109,7 @@ class controller {
                 }
                 else {
                     console.log("wrong OTP");
-                    return res.status(401).send({ "message":"wrong OTP1"})
+                    return res.status(422).send({ "message":"wrong OTP"})
                    
                 }
 

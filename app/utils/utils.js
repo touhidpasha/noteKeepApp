@@ -15,9 +15,11 @@ class utilities {
     verifyUser = (token) => {
         try {
             // console.log("before verify");
-            (jwt.verify(token, data.secret_key))
-            // console.log("after verify");
-            return true
+           const res= (jwt.verify(token, data.secret_key))
+            console.log("after verification "+JSON.stringify(res));
+            console.log("after verification 2 "+res.email);
+
+            return res.email;
         }
         catch {
             //  console.log(err);
