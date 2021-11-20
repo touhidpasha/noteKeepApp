@@ -6,13 +6,14 @@ class controller {
 
     //creates a note in the database
     createNote = (req, res) => {
+        var email = utils.verifyUser(req.body.token);
 
-        if (!utils.verifyUser(req.body.token))
+        if (!email)
             return res.status(401).send({ "message": "please login first" })
         let info = {
             "title": req.body.title,
             "content": req.body.content,
-            "email": req.body.email
+            "email": email
         }
 
         noteService.createNote(info, (err, data) => {
@@ -25,21 +26,40 @@ class controller {
         });
     };
 
+
+    //updating note as trash 
+    setTrash = (req, res, next) => {
+
+        const email = utils.verifyUser(req.body.token);
+        if (!email)
+            return res.status(401).send({ "message": "unautorizesd" })
+        else
+            noteService.setTrash(req.body, (err, data) => {
+                if (err) {
+                    return res.status(500).send({
+                        message: err.message || "Some error occurred while creating the Note.",
+                    });
+                }
+                return res.status(200).send(data);
+
+            })
+    }
+
     // Retrieve and return all notes from the database.
     findAll = (req, res) => {
         // console.log("in findall 1 " +JSON.stringify(req.body.token));
         // console.log("in findall 2 " +req.body.token);
         // console.log("in findall 2.1 " +req.token);
         // console.log("in findall 2.1 " +req.body);
-        console.log("req "+req.body);
-        console.log("req "+req.headers);
+        console.log("req " + req.body);
+        console.log("req " + req.headers);
 
         // console.log("header token "+req.body.data.token);
-        console.log("header tokenn auth "+req.body.headers.Authorization);
+        console.log("header tokenn auth " + req.body.headers.Authorization);
         // console.log(" header "+ req.headers.Authorization);
 
 
-        console.log("in findall 2.1 " +JSON.stringify(req.headers));
+        console.log("in findall 2.1 " + JSON.stringify(req.headers));
 
         // const email = utils.verifyUser(req.body.data.token);
         const email = utils.verifyUser(req.body.headers.Authorization);
@@ -56,7 +76,7 @@ class controller {
                         message: err.message || "Some error occurred while fetching the Note.",
                     });
                 }
-                console.log("output from server "+data);
+                console.log("output from server " + data);
                 return res.status(200).send(data);
             });
         }
@@ -115,26 +135,42 @@ class controller {
 
     // Delete a note with the specified noteId in the request
     deleteOne = (req, res) => {
-        let id = req.params.noteId;
-        noteService.deleteOne(id, (err, data) => {
-            if (err) {
-                if (err.kind === "ObjectId") {
-                    return res.status(404).send({
-                        message: "Note not found with id " + id,
+        console.log("deletion is called for "+req.body.id);
+        const email = utils.verifyUser(req.body.token);
+        if (!email)
+            return res.status(401).send({ "message": "unautorizesd for deletion" })
+        else
+            noteService.deleteOne(req.body, (err, data) => {
+                if (err) {
+                    return res.status(500).send({
+                        message: err.message || "Some error occurred while creating the Note.",
                     });
                 }
-                return res.status(500).send({
-                    message: "Error deleting note with id " + id,
-                });
-            }
-            if (!data) {
-                return res.status(404).send({
-                    message: "Note not found with id " + id,
-                });
-            }
-            res.send("Deleted node successfully");
-        });
-    };
+                return res.status(200).send(data);
+
+            })
+    }
+
+    // let id = req.params.noteId;
+    // noteService.deleteOne(id, (err, data) => {
+    //     if (err) {
+    //         if (err.kind === "ObjectId") {
+    //             return res.status(404).send({
+    //                 message: "Note not found with id " + id,
+    //             });
+    //         }
+    //         return res.status(500).send({
+    //             message: "Error deleting note with id " + id,
+    //         });
+    //     }
+    //     if (!data) {
+    //         return res.status(404).send({
+    //             message: "Note not found with id " + id,
+    //         });
+    //     }
+    //     res.send("Deleted node successfully");
+// });
+    // };
 }
 
 module.exports = new controller();

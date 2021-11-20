@@ -30,11 +30,17 @@ class noteService {
         });
     };
 
-    deleteOne = (findId, callback) => {
-        noteModel.deleteOne(findId, (err, data) => {
+    deleteOne = (info, callback) => {
+        noteModel.deleteOne(info, (err, data) => {
             return err ? callback(err, null) : callback(null, data);
         });
     };
+
+    setTrash = (info,callback) => {
+        noteModel.setTrash(info,(err, data)=>{
+            return err ? callback(err, null) : callback(null, data);
+        })
+    }
 }
 
 module.exports = new noteService();

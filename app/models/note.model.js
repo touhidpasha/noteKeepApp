@@ -2,7 +2,9 @@ const mongoose = require("mongoose");
 const NoteSchema = mongoose.Schema({
     title: String,
     content: String,
-    email: { type: mongoose.Schema.Types.String, ref: "User" },
+    trash: Boolean,
+    email: String,
+    // email: { type: mongoose.Schema.Types.String, ref: "User" },
 }, {
     timestamps: true,
 });
@@ -15,7 +17,8 @@ class noteModel {
         const note = new myNote({
             title: info.title,
             content: info.content,
-            email: info.email
+            email: info.email,
+            trash:false
         });
         // Save Note in the database
         return note.save((err, data) => {
@@ -63,11 +66,23 @@ class noteModel {
     };
 
     // Delete a note with the specified noteId in the request
-    deleteOne = (noteId, callback) => {
-        myNote.findByIdAndRemove(noteId, (err, data) => {
+    deleteOne = (info, callback) => {
+        myNote.deleteOne({_id:info.id},(err, data)=>{
             return err ? callback(err, null) : callback(null, data);
-        });
+        }
+            ) 
+        // findByIdAndRemove(noteId, (err, data) => {
+        //     return err ? callback(err, null) : callback(null, data);
+        // });
     };
+    setTrash=(info,callback) => {
+        console.log("trashing is in progress "+info.id);
+        myNote.findByIdAndUpdate({_id:info.id},{
+            trash:true
+        },(err, data) => {
+            return err ? callback(err, null) : callback(null, data);
+        })
+    }
 }
 
 module.exports = new noteModel();

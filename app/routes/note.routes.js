@@ -12,10 +12,15 @@ route.post('/getnotes', controller.findAll);
 // Retrieve a single Note with noteId
 route.get('/:noteId', controller.findOne);
 
+//moving note to thrasj i.e updatinf trash field
+route.put('/trash',controller.setTrash)
+// route.post('/trash',controller.setTrash)
+
+
 // Update a Note with noteId
 route.put('/:noteId', controller.updateNote);
 
 // Delete a Note with noteId
-route.delete('/:noteId', controller.deleteOne);
+route.put('/', controller.deleteOne);
 
 module.exports = route;

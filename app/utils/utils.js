@@ -8,7 +8,7 @@ class utilities {
         return (jwt.sign({ email: email },
             data.secret_key,
             {
-                expiresIn: "2h",
+                expiresIn: "365d",
             }))
     }
 
