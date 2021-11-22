@@ -41,6 +41,12 @@ class noteService {
             return err ? callback(err, null) : callback(null, data);
         })
     }
+
+    updateNote=(info, callback)=> {
+        noteModel.updateNote(info,(err, data)=>{
+            return err ? callback(err, null) : callback(null, data);
+        })
+    }
 }
 
 module.exports = new noteService();

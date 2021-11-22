@@ -23,4 +23,8 @@ route.put('/:noteId', controller.updateNote);
 // Delete a Note with noteId
 route.put('/', controller.deleteOne);
 
+// update a Note with noteId
+route.put('/update', controller.updateNote);
+
+
 module.exports = route;

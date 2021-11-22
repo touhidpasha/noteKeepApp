@@ -83,6 +83,11 @@ class noteModel {
             return err ? callback(err, null) : callback(null, data);
         })
     }
+    updateNote = (info, callback)=>{
+        myNote.findByIdAndUpdate({_id:info.id},{title:info.title,content:info.content},(err, data)=>{
+            return err ? callback(err, null) : callback(null, data)
+        })
+    }
 }
 
 module.exports = new noteModel();

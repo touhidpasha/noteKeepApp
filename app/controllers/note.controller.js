@@ -135,7 +135,7 @@ class controller {
 
     // Delete a note with the specified noteId in the request
     deleteOne = (req, res) => {
-        console.log("deletion is called for "+req.body.id);
+        console.log("deletion is called for " + req.body.id);
         const email = utils.verifyUser(req.body.token);
         if (!email)
             return res.status(401).send({ "message": "unautorizesd for deletion" })
@@ -151,6 +151,22 @@ class controller {
             })
     }
 
+    updateNote = (req, res) => {
+        const email = utils.verifyUser(req.body.token);
+        if (!email)
+            return res.status(401).send({ "message": "unautorizesd for deletion" })
+        else
+            noteService.updateNote(req.body, (err, data) => {
+                if (err) {
+                    return res.status(500).send({
+                        message: err.message || "Some error occurred while creating the Note.",
+                    });
+                }
+                return res.status(200).send(data);
+
+            })
+
+    }
     // let id = req.params.noteId;
     // noteService.deleteOne(id, (err, data) => {
     //     if (err) {
@@ -169,7 +185,7 @@ class controller {
     //         });
     //     }
     //     res.send("Deleted node successfully");
-// });
+    // });
     // };
 }
 
