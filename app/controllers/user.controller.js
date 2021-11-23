@@ -4,7 +4,17 @@ const jwt = require("../utils/utils")
 const nodeMailer = require("../utils/nodeMailer")
 const crypto = require('crypto')
 const multer = require('multer')
-const upload = multer({ dest: 'uploads/' })
+
+const fileStorageEngine=multer.diskStorage({
+  destination:(req,file,callback) => {
+    callback(null,"uploads/")
+  },
+  filename:(req,file,callback) => {
+    callback(null,file.originalname)
+  }
+})
+
+const upload = multer({ storage: fileStorageEngine})
 class controller {
 
   uploadImage = (upload.single('image'), async (req, res) => {
@@ -12,6 +22,7 @@ class controller {
     console.log(req.file);
     // console.log(req);
     console.log(req.body);
+    res.status(500).send({"msg":"image upload not done"})
     
     // try {
     //   if (req.file) {
