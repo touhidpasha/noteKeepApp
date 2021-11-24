@@ -43,3 +43,8 @@
   level: 'info',
   timestamp: '23-11-2021, 12:32:14'
 }
+{
+  message: 'database connected',
+  level: 'info',
+  timestamp: '23-11-2021, 19:25:12'
+}

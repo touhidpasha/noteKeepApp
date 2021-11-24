@@ -2,6 +2,18 @@ const controller = require('../controllers/user.controller');
 const express = require("express");
 const route = express.Router();
 const middleware=require("../middlewares/user.middleware");
+const multer = require('multer')
+
+const fileStorageEngine=multer.diskStorage({
+    destination:(req,file,callback) => {
+      callback(null,"uploads/")
+    },
+    filename:(req,file,callback) => {
+      callback(null,file.originalname)
+    }
+  })
+  
+  const upload = multer({ storage: fileStorageEngine})
 // const cors=require('cors')
 
  
@@ -40,7 +52,7 @@ const middleware=require("../middlewares/user.middleware");
     // Delete a Note with userId
     route.delete('/:userId', controller.deleteOne);
 
-    route.post('/uploadImage',controller.uploadImage)
+    route.post('/uploadImage',upload.single('image'),controller.uploadImage);
 
 
 module.exports = route;

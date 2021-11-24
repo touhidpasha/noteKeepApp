@@ -3,26 +3,26 @@ const middlewares = require("../middlewares/user.middleware.js")
 const jwt = require("../utils/utils")
 const nodeMailer = require("../utils/nodeMailer")
 const crypto = require('crypto')
-const multer = require('multer')
+// const multer = require('multer')
 
-const fileStorageEngine=multer.diskStorage({
-  destination:(req,file,callback) => {
-    callback(null,"uploads/")
-  },
-  filename:(req,file,callback) => {
-    callback(null,file.originalname)
-  }
-})
+// const fileStorageEngine=multer.diskStorage({
+//   destination:(req,file,callback) => {
+//     callback(null,"uploads/")
+//   },
+//   filename:(req,file,callback) => {
+//     callback(null,file.originalname)
+//   }
+// })
 
-const upload = multer({ storage: fileStorageEngine})
+// const upload = multer({ storage: fileStorageEngine})
 class controller {
 
-  uploadImage = (upload.single('image'), async (req, res) => {
+  uploadImage = ( (req, res) => {
     console.log("in upload image");
     console.log(req.file);
     // console.log(req);
     console.log(req.body);
-    res.status(500).send({"msg":"image upload not done"})
+    res.status(200).send({"msg":"image upload  done"})
     
     // try {
     //   if (req.file) {
