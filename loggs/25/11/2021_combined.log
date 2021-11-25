@@ -1,0 +1,10 @@
+{
+  message: 'database connected',
+  level: 'info',
+  timestamp: '25-11-2021, 10:50:46'
+}
+{
+  message: 'database connected',
+  level: 'info',
+  timestamp: '25-11-2021, 11:42:20'
+}
