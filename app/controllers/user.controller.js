@@ -4,18 +4,14 @@ const jwt = require("../utils/utils")
 const nodeMailer = require("../utils/nodeMailer")
 const crypto = require('crypto')
 class controller {
-
-
     //creates a note in the database
     createUser = (req, res) => {
-
         const info = {
             firstName: req.body.firstName,
             lastName: req.body.lastName,
             age: req.body.age,
             email: req.body.email,
             password: crypto.createHash('md5').update(req.body.password).digest('hex') //this will create hash for payload password
-
         }
         userService.createUser(info, (err, data) => {
             if (err) {
@@ -28,16 +24,12 @@ class controller {
         });
     };
 
-
     //method for user-login
     login = (req, res) => {
         var token;
         console.log("login user-controller");
         console.log(req.body);
         userService.login({ "email": req.body.email }, (err, data) => {
-            // console.log(data.password);
-            // console.log(req.body.password);
-            // console.log(crypto.createHash('md5').update(req.body.password).digest('hex'));
             if (err) {
                 return res.status(401).send({ message: "user not found" })
             } else if ((crypto.createHash('md5').update(req.body.password).digest('hex')) === data.password) { //  token=jwt.generateToken(req.body.email)
@@ -57,8 +49,6 @@ class controller {
         })
 
     }
-
-
     //forgot psw impl
 
     forgotPassword = (req, res) => {
@@ -80,65 +70,38 @@ class controller {
 
                     }
                 })
-                // const sendOTP=()=>{return OTP}
             }
         })
-        // const sendOTP=()=>{return OTP};
     }
-
 
     //rest password
     verifyOTP = (req, res) => {
-        // const info={
-        //   email:req.body.email,
-        //   OTP:req.body.OTP,
-        //   originalOTP:OTP
-        // }
         console.log("verify method called in user-controller" + req.body.email);
-
         userService.fetchUserData(req.body, (err, data) => {
             if (err)
                 return (res.status(500).send({ "message": "error occured in server" }))
             else {
 
-                console.log(req.body.OTP +" and "+data.OTP);
+                console.log(req.body.OTP + " and " + data.OTP);
                 if (req.body.OTP == data.OTP) //here for testing i'am hardcoding
                 {
                     console.log("correct OTP");
-                    return res.status(200).send({ "message":"correct OTP"})
+                    return res.status(200).send({ "message": "correct OTP" })
                 }
                 else {
                     console.log("wrong OTP");
-                    return res.status(422).send({ "message":"wrong OTP"})
-                   
+                    return res.status(422).send({ "message": "wrong OTP" })
                 }
-
             }
-            // else {
-            //     return res.status(400).send({ "message": "wrong OTP" })
-
-            // }
-            // }
         })
-
-
-
     }
 
     //rest password
     resetPassword = (req, res) => {
-        // const info={
-        //   email:req.body.email,
-        //   OTP:req.body.OTP,
-        //   originalOTP:OTP
-        // }
-        // if (req.body.OTP === 1748)//here for testing i'am hardcoding
-
         userService.fetchUserData(req.body, (err, data) => {
             if (err)
                 return (res.status(500).send({ "message": "error occured in server" }))
             else {
-                // if (data.OTP === req.body.OTP) {
                 userService.resetPassword(req.body, (crypto.createHash('md5').update(req.body.password).digest('hex')), (err, data) => {
                     if (err)
                         return res.status(500).send({ "message": "error occured while updatting" })
@@ -146,15 +109,7 @@ class controller {
                         return res.status(200).send({ "message": "password updated successfully" })
                 })
             }
-            // else {
-            //     return res.status(400).send({ "message": "wrong OTP" })
-
-            // }
-            // }
         })
-
-        // else
-        // return res.status(401).send("error occured")
     }
 
     // Retrieve and return all notes from the database.
@@ -191,31 +146,6 @@ class controller {
             return res.status(200).send({ user: data });
         });
     };
-
-    // Update a note identified by the userId in the request
-    // updateUser = (req, res) => {
-    //     let id = req.params.userId;
-    //     let name = req.body.name;
-    //     let age = req.body.age;
-    //     userService.updateUser(id, name, age, (err, data) => {
-    //         if (err) {
-    //             if (err.kind === "ObjectId") {
-    //                 return res.status(404).send({
-    //                     message: "user not found with id " + id,
-    //                 });
-    //             }
-    //             return res.status(500).send({
-    //                 message: "Error updating user with id " + id,
-    //             });
-    //         }
-    //         if (!data) {
-    //             return res.status(404).send({
-    //                 message: "user not found with id " + id,
-    //             });
-    //         }
-    //         return res.send({ message: "Update Succesfull", user: data });
-    //     });
-    // };
 
     // Delete a note with the specified userId in the request
     deleteOne = (req, res) => {

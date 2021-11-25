@@ -1,19 +1,14 @@
 const noteModel = require("../models/note.model.js");
 
 class noteService {
-
-
-
     createNote = (info, callback) => {
-
         noteModel.createNote(info, (err, data) => {
             return err ? callback(err, null) : callback(null, data);
         })
-
     };
 
-    findAll = (req,callback) => {
-        noteModel.findAll(req,(err, data) => {
+    findAll = (req, callback) => {
+        noteModel.findAll(req, (err, data) => {
             return err ? callback(err, null) : callback(null, data);
         })
     };
@@ -36,14 +31,14 @@ class noteService {
         });
     };
 
-    setTrash = (info,callback) => {
-        noteModel.setTrash(info,(err, data)=>{
+    setTrash = (info, callback) => {
+        noteModel.setTrash(info, (err, data) => {
             return err ? callback(err, null) : callback(null, data);
         })
     }
 
-    updateNote=(info, callback)=> {
-        noteModel.updateNote(info,(err, data)=>{
+    updateNote = (info, callback) => {
+        noteModel.updateNote(info, (err, data) => {
             return err ? callback(err, null) : callback(null, data);
         })
     }

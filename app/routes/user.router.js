@@ -6,9 +6,6 @@ const middleware = require("../middlewares/user.middleware");
 route.post('/', controller.createUser);
 // route.post('/',middleware.validate, controller.createUser);
 
-// //logifor user
-// route.get('/getUserDetails', controller.login)
-
 //logifor user
 route.post('/login', controller.login)
 
@@ -27,9 +24,6 @@ route.get('/', controller.findAll);
 
 // Retrieve a single Note with userId
 route.get('/:userId', controller.findOne);
-
-// Update a Note with userId
-// route.put('/:userId', controller.updateUser);
 
 // Delete a Note with userId
 route.delete('/:userId', controller.deleteOne);

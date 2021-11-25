@@ -5,8 +5,6 @@ const joi = require('joi')
 class middleware {
     validate = (req, res, next) => {
         //check if content is present
-        // name=req.body.name;
-        // console.log(req.body.name);
         const joiSchema = joi.object({
             name: joi.string()
                 .min(3)
@@ -34,24 +32,3 @@ class middleware {
 }
 
 module.exports = new middleware();
-
-
-// module.exports = (req, res, next) => {
-//     //check if content is present
-//     if (!req.body.name) {
-
-//         return res.status(400).send({
-//             message: "user must have name ",
-//         });
-//     }
-//     //validate title name
-//     var pattern = new RegExp("^[A-Z]{1}[a-zA-Z]{2,}$");
-//     if (!pattern.test(req.body.name)) {
-
-//         return res.status(400).send({
-//             message: "enter valid name which starts with capital letter",
-//         });
-//     } else {
-//         next();
-//     }
-// };

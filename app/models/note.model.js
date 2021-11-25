@@ -18,7 +18,7 @@ class noteModel {
             title: info.title,
             content: info.content,
             email: info.email,
-            trash:false
+            trash: false
         });
         // Save Note in the database
         return note.save((err, data) => {
@@ -29,19 +29,9 @@ class noteModel {
     // Retrieve and return all notes from the database.
     findAll = (req, callback) => {
         console.log(req.email);
-        return myNote.find({email: req.email}, (err, data)=>{
-            return err?callback(err, null): callback(null, data);
+        return myNote.find({ email: req.email }, (err, data) => {
+            return err ? callback(err, null) : callback(null, data);
         })
-        // return myNote.find({ email: req.body.email })
-        //     .populate({
-        //         path: "email",
-        //         select: ["title", "content", "email"]
-        //     })
-        //     .exec((err, data) => {
-        //         console.log(err);
-        //         console.log(data);
-        //         return err ? callback(err, null) : callback(null, data);
-        //     });
     };
 
     // Find a single note with a noteId
@@ -67,24 +57,21 @@ class noteModel {
 
     // Delete a note with the specified noteId in the request
     deleteOne = (info, callback) => {
-        myNote.deleteOne({_id:info.id},(err, data)=>{
+        myNote.deleteOne({ _id: info.id }, (err, data) => {
             return err ? callback(err, null) : callback(null, data);
         }
-            ) 
-        // findByIdAndRemove(noteId, (err, data) => {
-        //     return err ? callback(err, null) : callback(null, data);
-        // });
+        )
     };
-    setTrash=(info,callback) => {
-        console.log("trashing is in progress "+info.id);
-        myNote.findByIdAndUpdate({_id:info.id},{
-            trash:true
-        },(err, data) => {
+    setTrash = (info, callback) => {
+        console.log("trashing is in progress " + info.id);
+        myNote.findByIdAndUpdate({ _id: info.id }, {
+            trash: true
+        }, (err, data) => {
             return err ? callback(err, null) : callback(null, data);
         })
     }
-    updateNote = (info, callback)=>{
-        myNote.findByIdAndUpdate({_id:info.id},{title:info.title,content:info.content},(err, data)=>{
+    updateNote = (info, callback) => {
+        myNote.findByIdAndUpdate({ _id: info.id }, { title: info.title, content: info.content }, (err, data) => {
             return err ? callback(err, null) : callback(null, data)
         })
     }

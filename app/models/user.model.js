@@ -3,7 +3,6 @@ const UserSchema = mongoose.Schema(
   {
     firstName: String,
     lastName: String,
-    // age: Number,
     email: {
       type: String,
       unique: true
@@ -16,16 +15,13 @@ const UserSchema = mongoose.Schema(
     timestamps: true,
   }
 );
-
 const user = mongoose.model("User", UserSchema);
-
 class userModel {
   //creates a note and saves it in database
   createUser = (info, callback) => {
     const tempUser = new user({
       firstName: info.firstName,
       lastName: info.lastName,
-      // age: info.age,
       email: info.email,
       password: info.password,
       token: "",
@@ -38,11 +34,9 @@ class userModel {
     });
   };
 
-
   //fetching data from DB
   fetchUserData = (data, callback) => {
     user.findOne({ email: data.email }, (err, data) => {
-      // console.log(data);
       return err ? callback(err, null) : callback(null, data)
     })
   }
@@ -54,17 +48,9 @@ class userModel {
     });
   };
 
-  //finding userdaetails with email
-  // findUserByEmail = (email, callback) => {
-  //   return user.findByIdAndUpdate({ email: email }, (err, data) => {
-  //     return err ? callback(err, null) : callback(null, data);
-  //   })
-  // }
-
   // Find a single note with a userId
   findOne = (userId, callback) => {
     return user.findById(userId, (err, data) => {
-
       return err ? callback(err, null) : callback(null, data);
     });
   };
@@ -74,13 +60,12 @@ class userModel {
 
     return user.updateOne(
       { email: data.email }, {
-      password:data.password
+      password: data.password
     }
       , (err, data) => {
         return err ? callback(err, null) : callback(null, data);
       }
     )
-    // )
   };
 
 
@@ -92,8 +77,6 @@ class userModel {
   };
 
   saveOTP = (data, callback) => {
-    // return user.findByIdAndUpdate(
-
     return user.updateOne({
       email: data.email
     }, {
@@ -102,17 +85,13 @@ class userModel {
       return err ? callback(err, null) : callback(null, data);
     }
     )
-    // )
-
   }
 
   updateToken = (data, callback) => {
-    // return user.findByIdAndUpdate(
-    return user.updateOne({ email: data.email},{ token: data.token }, (err, data) => {
+    return user.updateOne({ email: data.email }, { token: data.token }, (err, data) => {
       return err ? callback(err, null) : callback(null, data)
     }
     )
-    // )
   }
 }
 module.exports = new userModel();

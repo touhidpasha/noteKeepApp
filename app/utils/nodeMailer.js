@@ -1,6 +1,4 @@
 var nodemailer = require('nodemailer');
-
-
 class nodeMailer{
 triggerMail=(receiverMailId,subject,text)=>{
 
