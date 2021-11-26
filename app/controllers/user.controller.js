@@ -3,6 +3,8 @@ const middlewares = require("../middlewares/user.middleware.js")
 const jwt = require("../utils/utils")
 const nodeMailer = require("../utils/nodeMailer")
 const crypto = require('crypto')
+
+var count=0;
 class controller {
     //creates a note in the database
     createUser = (req, res) => {
@@ -24,18 +26,20 @@ class controller {
         });
     };
 
+    
     //method for user-login
     login = (req, res) => {
+        
         var token;
-        console.log("login user-controller");
-        console.log(req.body);
+        console.log("login called "+(count++)+"times");
+        // console.log(req.body);
         userService.login({ "email": req.body.email }, (err, data) => {
             if (err) {
                 return res.status(401).send({ message: "user not found" })
             } else if ((crypto.createHash('md5').update(req.body.password).digest('hex')) === data.password) { //  token=jwt.generateToken(req.body.email)
-                console.log("login succesfull");
+                // console.log("login succesfull");
                 token = jwt.generateToken(req.body.email);
-                console.log("token: " + token);
+                // console.log("token: " + token);
 
                 userService.updateToken({ "email": req.body.email, "token": token }, (err, data) => {
                     if (err)

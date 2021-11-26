@@ -94,6 +94,7 @@ class controller {
         let id = req.params.noteId;
         let title = req.body.title;
         let content = req.body.content;
+        console.log("------ update note colled");
         noteService.updateNote(id, title, content, (err, data) => {
             if (err) {
                 if (err.kind === "ObjectId") {
@@ -114,6 +115,25 @@ class controller {
         });
     };
 
+
+    // Update a note identified by the noteId in the request
+    //updating note color
+    updateNoteColor = (req, res) => {
+        console.log("__________in update color controleer");
+        const email = utils.verifyUser(req.body.token);
+        if (!email)
+            return res.status(401).send({ "message": "unautorizesd" })
+        else
+            noteService.updateNoteColor(req.body, (err, data) => {
+                if (err) {
+                    return res.status(500).send({
+                        message: err.message || "Some error occurred while creating the Note.",
+                    });
+                }
+                return res.status(200).send(data);
+
+            })
+    }
     // Delete a note with the specified noteId in the request
     deleteOne = (req, res) => {
         console.log("deletion is called for " + req.body.id);
@@ -134,6 +154,8 @@ class controller {
 
     updateNote = (req, res) => {
         const email = utils.verifyUser(req.body.token);
+        // console.log("------ update note colled");
+
         if (!email)
             return res.status(401).send({ "message": "unautorizesd for deletion" })
         else

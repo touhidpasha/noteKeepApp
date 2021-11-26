@@ -26,5 +26,7 @@ route.put('/', controller.deleteOne);
 // update a Note with noteId
 route.put('/update', controller.updateNote);
 
+// update a Note with noteId
+route.post('/updateColor',controller.updateNoteColor);
 
 module.exports = route;

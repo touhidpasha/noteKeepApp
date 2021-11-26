@@ -8,6 +8,7 @@ route.post('/', controller.createUser);
 
 //logifor user
 route.post('/login', controller.login)
+// route.post('/login', controller.login)
 
 //forgot password implementation
 route.put('/forgotPassword', controller.forgotPassword)
