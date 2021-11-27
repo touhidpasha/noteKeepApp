@@ -31,7 +31,7 @@ class controller {
     login = (req, res) => {
         
         var token;
-        console.log("login called "+(count++)+"times");
+        console.log("login request called "+(count++)+"times");
         // console.log(req.body);
         userService.login({ "email": req.body.email }, (err, data) => {
             if (err) {
