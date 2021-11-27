@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const NoteSchema = mongoose.Schema({
     title: String,
     content: String,
+    // image:bso,
     trash: Boolean,
     email: String,
     color: String,

@@ -2,6 +2,7 @@ const controller = require('../controllers/user.controller');
 const express = require("express");
 const route = express.Router();
 const middleware = require("../middlewares/user.middleware");
+
 // Create a new Note
 route.post('/', controller.createUser);
 // route.post('/',middleware.validate, controller.createUser);
@@ -28,5 +29,7 @@ route.get('/:userId', controller.findOne);
 
 // Delete a Note with userId
 route.delete('/:userId', controller.deleteOne);
+
+
 
 module.exports = route;
