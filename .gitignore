@@ -2,3 +2,5 @@
 node_modules/
 .log
 loggs/
+app/aws-s3/aws-s3-config.json
+app/utils/

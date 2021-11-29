@@ -48,6 +48,11 @@ class noteService {
             return err ? callback(err, null) : callback(null, data);
         })
     }
+    uploadImage = (info, callback) => {
+        noteModel.uploadImage(info, (err, data) => {
+            return err ? callback(err, null) : callback(null, data);
+        })
+    }
 }
 
 module.exports = new noteService();

@@ -14,8 +14,8 @@ class utilities {
     verifyUser = (token) => {
         try {
            const res= (jwt.verify(token, data.secret_key))
-            console.log("after verification "+JSON.stringify(res));
-            console.log("after verification 2 "+res.email);
+            // console.log("after verification "+JSON.stringify(res));
+            // console.log("after verification 2 "+res.email);
 
             return res.email;
         }

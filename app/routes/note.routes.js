@@ -41,6 +41,9 @@ route.put('/update', controller.updateNote);
 route.post('/updateColor',controller.updateNoteColor);
 
 //image uploading
-route.post('/uploadImage', upload.single('image'));
+route.post('/uploadImage', upload.single('image'),controller.uploadImage);
+
+//image uploading
+route.post('/getImage',controller.getImage);
 
 module.exports = route;

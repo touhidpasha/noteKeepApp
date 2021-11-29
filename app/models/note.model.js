@@ -6,6 +6,7 @@ const NoteSchema = mongoose.Schema({
     trash: Boolean,
     email: String,
     color: String,
+    key: String,
     // email: { type: mongoose.Schema.Types.String, ref: "User" },
 }, {
     timestamps: true,
@@ -21,6 +22,7 @@ class noteModel {
             content: info.content,
             email: info.email,
             color: "#fff",
+            key:null,
             trash: false
         });
         // Save Note in the database
@@ -75,7 +77,7 @@ class noteModel {
     }
 
     updateNoteColor = (info, callback) => {
-        console.log("____________________updatinf " + info.color);
+        // console.log("____________________updatinf " + info.color);
         myNote.findByIdAndUpdate({ _id: info.id }, {
             color:info.color
         }, (err, data) => {
@@ -85,6 +87,12 @@ class noteModel {
 
     updateNote = (info, callback) => {
         myNote.findByIdAndUpdate({ _id: info.id }, { title: info.title, content: info.content }, (err, data) => {
+            return err ? callback(err, null) : callback(null, data)
+        })
+    }
+    uploadImage = (info, callback) => {
+        console.log("in model file upload", info);
+        myNote.findByIdAndUpdate({ _id: info.id }, { key: info.fileKey}, (err, data) => {
             return err ? callback(err, null) : callback(null, data)
         })
     }
