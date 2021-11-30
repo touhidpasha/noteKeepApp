@@ -1,3 +1,5 @@
+#aws
+app/aws-s3/aws-s3-config.json
 # Logs
 logs
 *.log
