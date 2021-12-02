@@ -4,6 +4,7 @@ const dbConfig = require('./config/database.config.js');
 const mongoose = require('mongoose');
 const noteRouter = require('./app/routes/note.routes.js');
 const userRouter = require('./app/routes/user.router');
+const labelRouter = require('./app/routes/label.routes')
 const swaggerUi = require('swagger-ui-express')
 const swaggerDocument = require('./swagger.json')
 const cors = require('cors')
@@ -22,6 +23,7 @@ app.use(express.urlencoded({
 app.use(express.json())
 app.use('/note', noteRouter);
 app.use('/user', userRouter);
+app.use('/label', labelRouter);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
 mongoose.Promise = global.Promise;
