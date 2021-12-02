@@ -1,9 +1,14 @@
 const labelModel = require("../models/label.model.js");
 class userService {
-    createLabel = (info, callback) => {
-        labelModel.createLabel(info, (err, data) => {
-            return err ? callback(err, null) : callback(null, data);
-        })
+    createLabel = async (info)=>{
+        try {
+            console.log("label service");
+
+           const res = await labelModel.createLabel(info)
+            return res;
+        } catch (e) {
+            return e
+        }
 
     };
 

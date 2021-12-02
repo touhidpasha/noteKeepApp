@@ -2,18 +2,24 @@ const labelService = require("../services/label.service.js");
 
 class controller {
     //creates a note in the database
-    createLabel = (req, res) => {
+    createLabel = async (req, res) => {
         const info = {
             labelName: req.body.labelName,
         }
-        labelService.createLabel(info, (err, data) => {
-            if (err) {
-                return res.status(500).send({
-                    message: err.message || "Some error occurred while creating the label.",
-                });
-            }
+
+        try {
+            console.log("label controller");
+            const data = await labelService.createLabel(info)
             return res.status(200).send(data);
-        });
+            // return res;
+        }
+        catch (err) {
+            return res.status(500).send({
+                message: err.message || "Some error occurred while creating the label.",
+            });
+
+        }
+
     };
 
 
@@ -42,7 +48,7 @@ class controller {
 
     // Find a single note with a userId
     findAll = (req, res) => {
-        labelService.findAll( (err, data) => {
+        labelService.findAll((err, data) => {
             if (err) {
                 return res.status(500).send({ 'message': "error while retrieving label" })
             }

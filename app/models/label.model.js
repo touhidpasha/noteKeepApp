@@ -10,16 +10,23 @@ const LabelSchema = mongoose.Schema(
 const label = mongoose.model("Label", LabelSchema);
 class labelModel {
     //creates a note and saves it in database
-    createLabel = (info, callback) => {
+
+    createLabel = async (info) => {
         const tempLabel = new label({
             labelName: info.labelName,
 
         });
 
-        // Save Note in the database
-        return tempLabel.save((err, data) => {
-            return err ? callback(err, null) : callback(null, data);
-        });
+
+        try {
+            console.log("label model");
+            const res=await tempLabel.save()
+            return res; 
+        } catch (e) {
+            return e;
+        }
+
+
     };
 
 
@@ -54,7 +61,7 @@ class labelModel {
 
     // Delete a note with the specified id in the request
     deleteOne = (labelName, callback) => {
-        return label.deleteOne({labelName: labelName}, (err, data) => {
+        return label.deleteOne({ labelName: labelName }, (err, data) => {
             return err ? callback(err, null) : callback(null, data);
         });
     };
