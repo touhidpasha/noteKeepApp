@@ -182,17 +182,35 @@ class controller {
         else {
             let key;
             try {
-                key = await awsS3.uploadFile(req.body.fileName)
-                console.log("contoller - image upload key " + key);
-                 await noteService.uploadImage({ "id": req.body.id, "fileKey": key }, (err, data) => {
+                awsS3.uploadFile(req.body.fileName, (err, data) => {
                     if (err) {
                         return res.status(500).send({
                             message: err.message || "Some error occurred while uploaiding image.",
                         });
                     }
-                    return res.status(200).send(data);
+                    console.log("contoller - image upload key " + data);
+
+                    noteService.uploadImage({ "id": req.body.id, "fileKey": data }, (err, data) => {
+                        if (err) {
+                            return res.status(500).send({
+                                message: err.message || "Some error occurred while uploaiding image.",
+                            });
+                        }
+                        return res.status(200).send(data);
+
+                    })
 
                 })
+                //     console.log("contoller - image upload key " + key);
+                //     noteService.uploadImage({ "id": req.body.id, "fileKey": key }, (err, data) => {
+                //         if (err) {
+                //             return res.status(500).send({
+                //                 message: err.message || "Some error occurred while uploaiding image.",
+                //             });
+                //         }
+                //         return res.status(200).send(data);
+
+                //     })
             } catch (err) {
                 return res.status(200).send({ "message": " aws s3 error" });
 

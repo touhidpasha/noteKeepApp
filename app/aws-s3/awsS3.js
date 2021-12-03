@@ -12,7 +12,7 @@ AWS.config.update({
 
 var s3 = new AWS.S3();
 class awsS3 {
-    uploadFile = async (fileName) => {
+    uploadFile = (fileName, callback) => {
         console.log("file name " + fileName);
         const uploadParams = {
             Bucket: s3Const.bucketName,
@@ -22,15 +22,16 @@ class awsS3 {
         };
 
         try {
-            await s3.upload(uploadParams, function (err, data) {
+            s3.upload(uploadParams, function (err, data) {
                 // console.log(path.basename(filePath) + " and " + path.dirname(filePath));
                 //handle error
                 if (err) {
+                    callback(err, null);
                     console.log("Error", err);
                 }
                 //success
                 if (data) {
-                    console.log("data " + JSON.stringify(data));
+                    console.log("data " + data);
                     console.log("Uploaded in:", data.Key);
                     try {
                         fs.unlinkSync(path.join(__dirname, ("../../uploads/" + fileName)))
@@ -38,7 +39,9 @@ class awsS3 {
                     catch (e) {
                         console.log("file deletion is not successfull " + fileName);
                     }
-                    return (JSON.stringify(data.Key))
+                    callback(null, data.key);
+
+                    // return (JSON.stringify(data.Key))
                 }
             });
 
@@ -47,6 +50,41 @@ class awsS3 {
             return (null)
         }
     }
+    // uploadFile = async (fileName) => {
+    //     console.log("file name " + fileName);
+    //     const uploadParams = {
+    //         Bucket: s3Const.bucketName,
+    //         Body: fs.readFileSync(path.join(__dirname, ("../../uploads/" + fileName))),
+    //         // Key: "fundooImages/" + Date.now() + "_" + path.basename(filePath)
+    //         Key: "fundooImages/" + Date.now() + "_" + fileName
+    //     };
+
+    //     try {
+    //         await s3.upload(uploadParams, function (err, data) {
+    //             // console.log(path.basename(filePath) + " and " + path.dirname(filePath));
+    //             //handle error
+    //             if (err) {
+    //                 console.log("Error", err);
+    //             }
+    //             //success
+    //             if (data) {
+    //                 console.log("data " + data);
+    //                 console.log("Uploaded in:", data.Key);
+    //                 try {
+    //                     fs.unlinkSync(path.join(__dirname, ("../../uploads/" + fileName)))
+    //                 }
+    //                 catch (e) {
+    //                     console.log("file deletion is not successfull " + fileName);
+    //                 }
+    //                 return (JSON.stringify(data.Key))
+    //             }
+    //         });
+
+    //     }
+    //     catch (e) {
+    //         return (null)
+    //     }
+    // }
     downloadFile = async (key) => {
 
         var downloadParams = {

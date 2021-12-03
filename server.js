@@ -23,7 +23,8 @@ app.use(express.json())
 app.use('/note', noteRouter);
 app.use('/user', userRouter);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
-
+app.use(()=>{console.log("***********bofore static fetching");},express.static('./uploads')); //static files folder
+// app.use('/images', express.static('images'));//url pattern
 mongoose.Promise = global.Promise;
 
 // Connecting to the database
