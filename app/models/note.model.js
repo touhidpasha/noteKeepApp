@@ -2,7 +2,6 @@ const mongoose = require("mongoose");
 const NoteSchema = mongoose.Schema({
     title: String,
     content: String,
-    // image:bso,
     trash: Boolean,
     email: String,
     color: String,
@@ -22,7 +21,7 @@ class noteModel {
             content: info.content,
             email: info.email,
             color: "#fff",
-            key:null,
+            key: null,
             trash: false
         });
         // Save Note in the database
@@ -33,7 +32,6 @@ class noteModel {
 
     // Retrieve and return all notes from the database.
     findAll = (req, callback) => {
-        console.log(req.email);
         return myNote.find({ email: req.email }, (err, data) => {
             return err ? callback(err, null) : callback(null, data);
         })
@@ -68,7 +66,6 @@ class noteModel {
         )
     };
     setTrash = (info, callback) => {
-        console.log("trashing is in progress " + info.id);
         myNote.findByIdAndUpdate({ _id: info.id }, {
             trash: true
         }, (err, data) => {
@@ -77,9 +74,8 @@ class noteModel {
     }
 
     updateNoteColor = (info, callback) => {
-        // console.log("____________________updatinf " + info.color);
         myNote.findByIdAndUpdate({ _id: info.id }, {
-            color:info.color
+            color: info.color
         }, (err, data) => {
             return err ? callback(err, null) : callback(null, data);
         })
@@ -91,11 +87,9 @@ class noteModel {
         })
     }
     uploadImage = (info, callback) => {
-        console.log("in model file upload", info);
-        myNote.findByIdAndUpdate({ _id: info.id }, { key: info.fileKey}, (err, data) => {
+        myNote.findByIdAndUpdate({ _id: info.id }, { key: info.fileKey }, (err, data) => {
             return err ? callback(err, null) : callback(null, data)
         })
     }
 }
-
 module.exports = new noteModel();

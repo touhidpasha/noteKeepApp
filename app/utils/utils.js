@@ -3,7 +3,6 @@ const data = require("../utils/data")
 
 class utilities {
     generateToken = (email) => {
-
         return (jwt.sign({ email: email },
             data.secret_key,
             {
@@ -13,10 +12,7 @@ class utilities {
 
     verifyUser = (token) => {
         try {
-           const res= (jwt.verify(token, data.secret_key))
-            // console.log("after verification "+JSON.stringify(res));
-            // console.log("after verification 2 "+res.email);
-
+            const res = (jwt.verify(token, data.secret_key))
             return res.email;
         }
         catch {

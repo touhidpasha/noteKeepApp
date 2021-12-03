@@ -57,7 +57,6 @@ class userModel {
 
   // Update a note identified by the userId in the request
   updateUser = (data, callback) => {
-
     return user.updateOne(
       { email: data.email }, {
       password: data.password
@@ -67,7 +66,6 @@ class userModel {
       }
     )
   };
-
 
   // Delete a note with the specified userId in the request
   deleteUser = (userId, callback) => {

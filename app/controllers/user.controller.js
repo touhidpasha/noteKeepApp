@@ -3,8 +3,6 @@ const middlewares = require("../middlewares/user.middleware.js")
 const jwt = require("../utils/utils")
 const nodeMailer = require("../utils/nodeMailer")
 const crypto = require('crypto')
-
-var count=0;
 class controller {
     //creates a note in the database
     createUser = (req, res) => {
@@ -21,53 +19,41 @@ class controller {
                     message: err.message || "Some error occurred while creating the user.",
                 });
             }
-            // nodeMailer.triggerMail(data.email,"welcome..","keep your daily notes here")
+            nodeMailer.triggerMail(data.email, "welcome..", "keep your daily notes here")
             return res.status(200).send(data);
         });
     };
 
-    
     //method for user-login
     login = (req, res) => {
-        
         var token;
-        console.log("login request called "+(count++)+"times");
-        // console.log(req.body);
         userService.login({ "email": req.body.email }, (err, data) => {
             if (err) {
                 return res.status(401).send({ message: "user not found" })
             } else if ((crypto.createHash('md5').update(req.body.password).digest('hex')) === data.password) { //  token=jwt.generateToken(req.body.email)
-                // console.log("login succesfull");
                 token = jwt.generateToken(req.body.email);
-                // console.log("token: " + token);
-
                 userService.updateToken({ "email": req.body.email, "token": token }, (err, data) => {
                     if (err)
                         return res.status(500).send({ "message": "error occured while updatting" })
                     else
                         return res.status(200).send({ "token": token })
                 })
-
             } else
                 return res.status(401).send({ message: "credentials are not correct" })
         })
-
     }
     //forgot psw impl
 
     forgotPassword = (req, res) => {
-        console.log("forgot pasd called in user-contoller" + req.body.email);
         userService.forgotPassword(req.body.email, (err, data) => {
             var OTP;
             if (err)
                 return res.status(404).send({ "msg": "user not found" })
             else {
                 OTP = middlewares.sendOTP(data.email);
-                console.log("OTP has generated");
                 userService.saveOTP({ "email": data.email, "OTP": OTP }, (err, info) => {
                     if (err) {
                         return res.status(500).send({ "msg": "some issue in server,try again" })
-
                     }
                     else {
                         return res.status(200).send({ "msg": "otp has been delivered to " + data.email })
@@ -80,20 +66,15 @@ class controller {
 
     //rest password
     verifyOTP = (req, res) => {
-        console.log("verify method called in user-controller" + req.body.email);
         userService.fetchUserData(req.body, (err, data) => {
             if (err)
                 return (res.status(500).send({ "message": "error occured in server" }))
             else {
-
-                console.log(req.body.OTP + " and " + data.OTP);
                 if (req.body.OTP == data.OTP) //here for testing i'am hardcoding
                 {
-                    console.log("correct OTP");
                     return res.status(200).send({ "message": "correct OTP" })
                 }
                 else {
-                    console.log("wrong OTP");
                     return res.status(422).send({ "message": "wrong OTP" })
                 }
             }

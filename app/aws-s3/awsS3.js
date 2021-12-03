@@ -13,26 +13,20 @@ AWS.config.update({
 var s3 = new AWS.S3();
 class awsS3 {
     uploadFile = (fileName, callback) => {
-        console.log("file name " + fileName);
         const uploadParams = {
             Bucket: s3Const.bucketName,
             Body: fs.readFileSync(path.join(__dirname, ("../../uploads/" + fileName))),
-            // Key: "fundooImages/" + Date.now() + "_" + path.basename(filePath)
             Key: "fundooImages/" + Date.now() + "_" + fileName
         };
 
         try {
             s3.upload(uploadParams, function (err, data) {
-                // console.log(path.basename(filePath) + " and " + path.dirname(filePath));
                 //handle error
                 if (err) {
                     callback(err, null);
-                    console.log("Error", err);
                 }
                 //success
                 if (data) {
-                    console.log("data " + data);
-                    console.log("Uploaded in:", data.Key);
                     try {
                         fs.unlinkSync(path.join(__dirname, ("../../uploads/" + fileName)))
                     }
@@ -40,15 +34,30 @@ class awsS3 {
                         console.log("file deletion is not successfull " + fileName);
                     }
                     callback(null, data.key);
-
-                    // return (JSON.stringify(data.Key))
                 }
             });
-
         }
         catch (e) {
             return (null)
         }
+    }
+
+    downloadFile = async (key) => {
+
+        var downloadParams = {
+            Bucket: s3Const.bucketName,
+            Key: key
+        };
+        s3.getObject(downloadParams, (err, res) => {
+            if (err === null) {
+                console.log("downloaded");
+                console.log(res);
+                return res.Body
+            } else {
+                console.log(err);
+                return null;
+            }
+        });
     }
     // uploadFile = async (fileName) => {
     //     console.log("file name " + fileName);
@@ -85,61 +94,6 @@ class awsS3 {
     //         return (null)
     //     }
     // }
-    downloadFile = async (key) => {
 
-        var downloadParams = {
-            Bucket: s3Const.bucketName,
-            Key: key
-        };
-        s3.getObject(downloadParams, (err, res) => {
-            if (err === null) {
-                console.log("downloaded");
-                console.log(res);
-                return res.Body
-                // fs.writeFileSync('../../uploads/key', res.Body);
-            } else {
-                console.log(err);
-                return null;
-            }
-        });
-    }
 }
 module.exports = new awsS3();
-// var filePath = "../../app/assets/download.jpeg";
-
-//configuring parameters
-// const uploadParams = {
-//     Bucket: s3Const.bucketName,
-//     Body:fs.readFileSync(filePath),
-//     Key: "folder/" + Date.now() + "_" + path.basename(filePath)
-// };
-
-
-
-// s3.upload(uploadParams, function (err, data) {
-//     console.log(path.basename(filePath) + " and " + path.dirname(filePath));
-//     //handle error
-//     if (err) {
-//         console.log("Error", err);
-//     }
-//     //success
-//     if (data) {
-//         console.log("Uploaded in:", data.Location);
-//     }
-// });
-
-
-// var downloadParams = {
-//     Bucket: s3Const.bucketName,
-//     Key: 'folder/1638080816368_download.jpeg'
-// };
-// s3.getObject(downloadParams, (err, res) => {
-//     if (err === null) {
-//         console.log("downloaded");
-//         console.log(res);
-//         fs.writeFileSync('./write-data1.jpeg', res.Body);
-//     } else {
-//         console.log(err);
-//     }
-// });
-
