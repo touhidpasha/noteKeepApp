@@ -1,3 +1,12 @@
+/* ************************************************************************
+ * Purpose          : get the values from the controller and process them for the notes in fundo  notes                
+ * 
+ * @file            : note.contoller.js
+ * @author          : Touhid pasha
+ * @version         : 1.0
+ * @since           : 9-8-2021
+ * 
+ **************************************************************************/
 const noteService = require("../services/note.service.js");
 const utils = require("../utils/utils")
 const awsS3 = require("../aws-s3/awsS3")

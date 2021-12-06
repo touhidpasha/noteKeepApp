@@ -1,3 +1,12 @@
+/* ************************************************************************
+ * Purpose          : get the values from the controller and process them for the notes in fundo  notes                
+ * 
+ * @file            : note.contoller.js
+ * @author          : Touhid pasha
+ * @version         : 1.0
+ * @since           : 9-8-2021
+ * 
+ **************************************************************************/
 const nodeMailer = require("../utils/nodeMailer")
 const joi = require('joi')
 class middleware {

@@ -1,3 +1,12 @@
+/* ************************************************************************
+ * Purpose          : get the values from the controller and process them for the notes in fundo  notes                
+ * 
+ * @file            : note.contoller.js
+ * @author          : Touhid pasha
+ * @version         : 1.0
+ * @since           : 9-8-2021
+ * 
+ **************************************************************************/
 const userService = require("../services/user.service.js");
 const middlewares = require("../middlewares/user.middleware.js")
 const jwt = require("../utils/utils")
