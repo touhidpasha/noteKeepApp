@@ -1,10 +1,35 @@
 const userModel = require("../models/user.model.js");
+const userRedis = require("../redis/user.redis")
+const redis = require('redis');
+
+// make a connection to the local instance of redis
+const client = redis.createClient(6379);
+client.on("error", (error) => {
+  console.error(error);
+});
 class userService {
   createUser = (info, callback) => {
     userModel.createUser(info, (err, data) => {
       return err ? callback(err, null) : callback(null, data);
     })
 
+  };
+
+  findAll = async () => {
+    try {
+      const res = await userRedis.findAll({ "key": "users", "client": client })
+      if (res===null) {
+        const data = await userModel.findAll();
+
+        // save the record in the cache for subsequent request
+        await client.setex("users", 1440, JSON.stringify(data))
+        return data;
+      }
+      else return res;
+
+    } catch (err) {
+      return err;
+    }
   };
 
   //lognin method
@@ -30,11 +55,7 @@ class userService {
 
   };
 
-  findAll = (callback) => {
-    userModel.findAll((err, data) => {
-      return err ? callback(err, null) : callback(null, data);
-    })
-  };
+
 
   findOne = (findId, callback) => {
     userModel.findOne(findId, (err, data) => {

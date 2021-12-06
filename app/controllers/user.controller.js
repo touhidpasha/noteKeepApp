@@ -98,15 +98,17 @@ class controller {
     }
 
     // Retrieve and return all notes from the database.
-    findAll = (req, res) => {
-        userService.findAll((err, data) => {
-            if (err) {
-                return res.status(500).send({
-                    message: err.message || "Some error occurred while creating the user.",
-                });
-            }
+    findAll = async (res) => {
+        try {
+            const data =await  userService.findAll()
             return res.status(200).send(data);
-        });
+        } catch (err) {
+            return res.status(500).send({
+                message: err.message || "Some error occurred while creating the user.",
+            });
+        }
+
+
     };
 
     // Find a single note with a userId

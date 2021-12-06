@@ -41,11 +41,17 @@ class userModel {
     })
   }
 
+  // // Retrieve and return all notes from the database.
+  // findAll = (callback) => {
+  //   return user.find((err, data) => {
+  //     return err ? callback(err, null) : callback(null, data);
+  //   });
+  // };
   // Retrieve and return all notes from the database.
-  findAll = (callback) => {
-    return user.find((err, data) => {
-      return err ? callback(err, null) : callback(null, data);
-    });
+  findAll = async () => {
+    try {console.log("model"); 
+      return await user.find() }
+    catch (err) { return err }
   };
 
   // Find a single note with a userId
