@@ -7,10 +7,13 @@
 // });
 
 class userRedis {
-    findAll = async (info) => {
+    findAll = async(info) => {
         try {
             console.log("user redis");
             const res = await info.client.get(info.key);
+            console.log("____________in redis" + res);
+            if (res !== null)
+                await info.client.setex('users', 50, JSON.stringify(res))
             return res;
 
         } catch (err) {
