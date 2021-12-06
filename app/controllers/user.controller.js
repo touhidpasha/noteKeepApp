@@ -98,9 +98,10 @@ class controller {
     }
 
     // Retrieve and return all notes from the database.
-    findAll = async (res) => {
+    findAll = async (req,res) => {
         try {
             const data =await  userService.findAll()
+            console.log("in controller "+JSON.stringify(data));
             return res.status(200).send(data);
         } catch (err) {
             return res.status(500).send({

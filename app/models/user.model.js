@@ -49,8 +49,12 @@ class userModel {
   // };
   // Retrieve and return all notes from the database.
   findAll = async () => {
-    try {console.log("model"); 
-      return await user.find() }
+    try {
+      console.log("model");
+      const res = await user.find()
+      // console.log(JSON.stringify(res))
+      return res;
+    }
     catch (err) { return err }
   };
 
