@@ -18,10 +18,11 @@ class userService {
   findAll = async () => {
     try {
       const res = await userRedis.findAll({ "key": "users", "client": client })
-      console.log("from redis "+res);
-      if (res==null) {
+      console.log("from redis " + res);
+      if (res == null) {
         const data = await userModel.findAll();
-        console.log("from DB " +JSON.stringify(data));
+        await info.client.setex('users', 50, JSON.stringify(data))
+        console.log("from DB " + JSON.stringify(data));
         // console.log(client);
         // save the record in the cache for subsequent request
         //  client.setex('users', 15, JSON.stringify(data))
