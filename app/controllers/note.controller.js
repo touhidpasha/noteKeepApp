@@ -49,7 +49,8 @@ class controller {
 
     // Retrieve and return all notes from the database.
     findAll = (req, res) => {
-        const email = utils.verifyUser(req.body.headers.Authorization);
+        // const email = utils.verifyUser(req.body.headers.Authorization);
+        const email = utils.verifyUser(req.body.token);
         if (email !== false) {
             noteService.findAll({ "email": email }, (err, data) => {
                 if (err) {

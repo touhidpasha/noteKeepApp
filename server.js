@@ -47,3 +47,4 @@ app.listen(5000, () => {
     dbConnect();
     console.log("server started");
 });
+module.exports = app

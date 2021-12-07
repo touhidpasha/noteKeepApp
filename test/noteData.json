@@ -1,0 +1,8 @@
+{
+    "validData": {
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRvdWhpZHBhc2hhNTUyQGdtYWlsLmNvbSIsImlhdCI6MTYzODg0NTA1OSwiZXhwIjoxNjcwMzgxMDU5fQ.CSKBLlL2aBJ5EFIB29goJ8MGtsFqzXAebQU8u82OgJg"
+    },
+    "invalidData": {
+        "token": "sdJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRvdWhpZHBhc2hhNTUyQGdtYWlsLmNvbSIsImlhdCI6MTYzODg0NTA1OSwiZXhwIjoxNjcwMzgxMDU5fQ.CSKBLlL2aBJ5EFIB29goJ8MGtsFqzXAebQU8u82OgJg"
+    }
+}
