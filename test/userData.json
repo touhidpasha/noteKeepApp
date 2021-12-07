@@ -6,5 +6,25 @@
     "validUserLoginData": {
         "email": "touhidpasha552@gmail.com",
         "password": "Abc@123"
+    },
+    "validInputForUserRegistration": {
+        "firstName": "Abcd",
+        "lastName": "Fgh",
+        "age": 22,
+        "email": "abcd@gmail.com",
+        "password": "Abcd@1234"
+    },
+    "invalidInputForUserRegistration": {
+        "firstName": "abcd",
+        "lastName": "fgh",
+        "age": 22,
+        "email": "abcd@gmail.com",
+        "password": "Abcd"
+    },
+    "validId": {
+        "_id": "618cad7a06606c993c42decf"
+    },
+    "invalidId": {
+        "_id": "cad7a06606c993c42decf"
     }
 }

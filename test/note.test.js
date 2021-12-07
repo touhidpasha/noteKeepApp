@@ -32,15 +32,15 @@ describe("POST user login", () => {
 
 describe("POST user login", () => {
 
-    it('after passing token it should send user data with status code', (done) => {
+    it('after passing invalid token it should send  status code 401', (done) => {
 
         const noteData = noteInputs.invalidData
         chai.request(server)
             .post('/note/getNotes')
             .send(noteData)
             .end((err, res) => {
-                res.should.have.status(200);
-                res.should.be.a('object')
+                res.should.have.status(401);
+                // res.should.be.a('object')
                 // res.body.should.have.property('token')
                 if (err)
                     return done(err)
