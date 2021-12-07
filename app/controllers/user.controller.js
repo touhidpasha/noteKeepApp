@@ -101,7 +101,7 @@ class controller {
     findAll = async (req,res) => {
         try {
             const data =await  userService.findAll()
-            console.log("in controller "+JSON.stringify(data));
+            // console.log("in controller "+JSON.stringify(data));
             return res.status(200).send(data);
         } catch (err) {
             return res.status(500).send({

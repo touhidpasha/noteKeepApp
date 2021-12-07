@@ -9,9 +9,9 @@
 class userRedis {
     findAll = async(info) => {
         try {
-            console.log("user redis");
+            // console.log("user redis");
             const res = await info.client.get(info.key);
-            console.log("____________in redis" + res);
+            console.log("____________in redis " + res);
             return res;
 
         } catch (err) {

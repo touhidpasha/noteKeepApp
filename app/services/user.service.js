@@ -3,7 +3,8 @@ const userRedis = require("../redis/user.redis")
 const redis = require('redis');
 
 // make a connection to the local instance of redis
-const client = redis.createClient(6379);
+// const client = redis.createClient(6379);
+const client = redis.createClient();
 client.on("error", (error) => {
   console.error(error);
 });
@@ -17,19 +18,24 @@ class userService {
 
   findAll = async () => {
     try {
+      await client.connect();
       const res = await userRedis.findAll({ "key": "users", "client": client })
-      console.log("from redis " + res);
+      console.log("from redis " + JSON.stringify(res));
       if (res == null) {
         const data = await userModel.findAll();
-        await info.client.setex('users', 50, JSON.stringify(data))
+        await client.set('users', data)
         console.log("from DB " + JSON.stringify(data));
         // console.log(client);
         // save the record in the cache for subsequent request
         //  client.setex('users', 15, JSON.stringify(data))
         return data;
       }
-      else return res;
-
+      else {
+        // client.del("users")
+        // console.log("data found");
+        await client.disconnect()
+        return res;
+      }
     } catch (err) {
       return err;
     }
